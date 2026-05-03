@@ -12,6 +12,9 @@ import { supabase } from './connection.js';
 import { cekAutentikasi } from './middleware/AuthMiddleware.js';
 import { LoginRoute } from './controller/LoginController.js';
 import { UserRoute } from './controller/UserController.js';
+import { MaterialRoute } from './controller/MaterialController.js';
+import { SalesRoute } from './controller/SalesController.js';
+import { MaterialPurshasesRoute } from './controller/MaterialPurshasesController.js';
 
 // ======= Initialization
 const app = express();
@@ -53,6 +56,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 // ======= CSRF Protection Setup
 const { csrfSynchronisedProtection, generateToken } = csrfSync({
   getTokenFromRequest: (req) => req.headers["x-csrf-token"], 
@@ -63,24 +67,24 @@ app.get("/api/v1/xxdf", (req, res) => {
   res.json({ csrfToken: generateToken(req) });
 });
 
-// Middleware Proteksi CSRF (Berlaku untuk semua endpoint di bawah ini)
-app.use(csrfSynchronisedProtection);
+app.use("/auth", LoginRoute);
+
+// ======= Custom CSRF Middleware (hanya untuk POST/PUT/DELETE)
+app.use((req, res, next) => {
+  // Skip CSRF check untuk GET, HEAD, OPTIONS
+  if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
+    return next();
+  }
+  // Validate CSRF untuk POST, PUT, DELETE, PATCH
+  csrfSynchronisedProtection(req, res, next);
+});
+
 
 // ======= API Endpoints
-app.use("/auth", LoginRoute);
 app.use("/api/v1/user", cekAutentikasi, UserRoute);
-
-app.get("/api/v1/materials", cekAutentikasi, async (req, res) => {
-  try {
-    const { data, error } = await supabase.from('materials').select('*');
-    if (error) {
-      return res.status(400).json({ error: error.message });
-    }
-    res.json(data);
-  } catch (err) {
-    res.status(500).json({ error: 'Terjadi kesalahan saat mengambil data materials.' });
-  }
-});
+app.use("/api/v1/materials", cekAutentikasi, MaterialRoute);
+app.use("/api/v1/sales", cekAutentikasi, SalesRoute);
+app.use("/api/v1/material-purchases", cekAutentikasi, MaterialPurshasesRoute);
 
 // ======= Logout / Frontend Endpoints
 app.get("/logout", (req, res, next) => {
