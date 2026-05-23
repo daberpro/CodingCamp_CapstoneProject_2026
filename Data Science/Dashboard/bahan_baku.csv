@@ -1,0 +1,68 @@
+tanggal,nama_barang,material_id,unit_type,qty,harga_satuan,total_harga
+2025-12-20,kertas cellophane,Kertas_Cellophane,lembar,50,1500,75000
+2025-12-20,lem tembak,Lem_Tembak,batang,30,1000,30000
+2025-12-20,tusuk sate,Tusuk_Sate,pack,5,5000,25000
+2025-12-20,pita satin,Pita_Satin,roll,10,5000,50000
+2025-12-21,kawat bulu,Kawat_Bulu,pack,5,15000,75000
+2025-12-21,bunga palsu,Bunga_Palsu,tangkai,10,15000,150000
+2025-12-23,solatip besar,Solatip_Besar,roll,5,5000,25000
+2025-12-23,solatip kecil,Solatip_Kecil,roll,5,2000,10000
+2025-12-24,kardus,Kardus,lembar,20,2000,40000
+2025-12-28,kertas cellophane,Kertas_Cellophane,lembar,20,1500,30000
+2025-12-28,pita,Pita,roll,5,5000,25000
+2025-12-30,lem tembak,Lem_Tembak,batang,10,1000,10000
+2026-01-02,kertas cellophane,Kertas_Cellophane,lembar,20,1500,30000
+2026-01-02,tusuk sate,Tusuk_Sate,pack,1,5000,5000
+2026-01-03,lem tembak,Lem_Tembak,batang,10,1000,10000
+2026-01-03,solatip kecil,Solatip_Kecil,roll,1,2000,2000
+2026-01-06,pita satin,Pita_Satin,roll,2,5000,10000
+2026-01-08,kertas cellophane,Kertas_Cellophane,lembar,10,1500,15000
+2026-01-10,kawat bulu,Kawat_Bulu,pack,1,15000,15000
+2026-01-11,kardus,Kardus,lembar,5,2000,10000
+2026-01-13,lem tembak,Lem_Tembak,batang,5,1000,5000
+2026-01-15,bunga palsu,Bunga_Palsu,tangkai,2,15000,30000
+2026-01-18,kertas cellophane,Kertas_Cellophane,lembar,10,1500,15000
+2026-01-20,tusuk sate,Tusuk_Sate,pack,1,5000,5000
+2026-01-22,pita,Pita,roll,1,5000,5000
+2026-01-25,lem tembak,Lem_Tembak,batang,10,1000,10000
+2026-01-27,solatip besar,Solatip_Besar,roll,1,5000,5000
+2026-01-28,kertas cellophane,Kertas_Cellophane,lembar,10,1500,15000
+2026-02-02,kertas cellophane,Kertas_Cellophane,lembar,20,1500,30000
+2026-02-03,lem tembak,Lem_Tembak,batang,10,1000,10000
+2026-02-05,kawat bulu,Kawat_Bulu,pack,2,15000,30000
+2026-02-07,tusuk sate,Tusuk_Sate,pack,1,5000,5000
+2026-02-10,pita satin,Pita_Satin,roll,2,5000,10000
+2026-02-11,kertas cellophane,Kertas_Cellophane,lembar,10,1500,15000
+2026-02-13,kardus,Kardus,lembar,5,2000,10000
+2026-02-14,solatip kecil,Solatip_Kecil,roll,2,2000,4000
+2026-02-16,bunga palsu,Bunga_Palsu,tangkai,2,15000,30000
+2026-02-19,lem tembak,Lem_Tembak,batang,10,1000,10000
+2026-02-20,tusuk sate,Tusuk_Sate,pack,1,5000,5000
+2026-02-23,kertas cellophane,Kertas_Cellophane,lembar,10,1500,15000
+2026-02-25,pita,Pita,roll,1,5000,5000
+2026-02-27,lem tembak,Lem_Tembak,batang,5,1000,5000
+2026-03-02,kertas cellophane,Kertas_Cellophane,lembar,20,1500,30000
+2026-03-04,lem tembak,Lem_Tembak,batang,10,1000,10000
+2026-03-05,kawat bulu,Kawat_Bulu,pack,1,15000,15000
+2026-03-08,tusuk sate,Tusuk_Sate,pack,1,5000,5000
+2026-03-10,kardus,Kardus,lembar,5,2000,10000
+2026-03-12,pita satin,Pita_Satin,roll,2,5000,10000
+2026-03-15,kertas cellophane,Kertas_Cellophane,lembar,10,1500,15000
+2026-03-17,solatip kecil,Solatip_Kecil,roll,1,2000,2000
+2026-03-19,bunga palsu,Bunga_Palsu,tangkai,2,15000,30000
+2026-03-21,lem tembak,Lem_Tembak,batang,10,1000,10000
+2026-03-23,tusuk sate,Tusuk_Sate,pack,1,5000,5000
+2026-03-25,kertas cellophane,Kertas_Cellophane,lembar,10,1500,15000
+2026-03-28,pita,Pita,roll,1,5000,5000
+2026-03-30,lem tembak,Lem_Tembak,batang,5,1000,5000
+2026-04-02,kertas cellophane,Kertas_Cellophane,lembar,10,1500,15000
+2026-04-03,lem tembak,Lem_Tembak,batang,10,1000,10000
+2026-04-04,tusuk sate,Tusuk_Sate,pack,1,5000,5000
+2026-04-05,pita satin,Pita_Satin,roll,1,5000,5000
+2026-04-07,kardus,Kardus,lembar,5,2000,10000
+2026-04-08,kawat bulu,Kawat_Bulu,pack,1,15000,15000
+2026-04-09,solatip kecil,Solatip_Kecil,roll,1,2000,2000
+2026-04-10,kertas cellophane,Kertas_Cellophane,lembar,10,1500,15000
+2026-04-11,lem tembak,Lem_Tembak,batang,5,1000,5000
+2026-04-13,bunga palsu,Bunga_Palsu,tangkai,1,15000,15000
+2026-04-14,pita,Pita,roll,1,5000,5000
