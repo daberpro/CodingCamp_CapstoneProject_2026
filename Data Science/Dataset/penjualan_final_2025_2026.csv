@@ -1,4 +1,4 @@
-Tanggal,produk,qty,Harga_Jual,Modal,Profit,is_event,event_type
+tanggal,produk,qty,Harga_Jual,Modal,Profit,is_event,event_type
 01/01/2025,-,0,0,0,0,TRUE,Tahun Baru Masehi
 02/01/2025,bouquet tumbelina koran ,1,88000,53000,35000,FALSE,-
 02/01/2025,bouquet model koran tumbelina mini ,1,88000,53000,35000,FALSE,-
