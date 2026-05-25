@@ -1,0 +1,617 @@
+tanggal,produk,qty,Harga_Jual,Modal,Profit,is_event,event_type
+01/01/2025,-,0,0,0,0,TRUE,Tahun Baru Masehi
+02/01/2025,bouquet tumbelina koran ,1,88000,53000,35000,FALSE,-
+02/01/2025,bouquet model koran tumbelina mini ,1,88000,53000,35000,FALSE,-
+03/01/2025,-,0,0,0,0,FALSE,-
+04/01/2025,-,0,0,0,0,FALSE,-
+05/01/2025,bouquet costum snack jumbo ,1,185000,122000,63000,FALSE,-
+06/01/2025,-,0,0,0,0,FALSE,-
+07/01/2025,-,0,0,0,0,FALSE,-
+08/01/2025,-,0,0,0,0,FALSE,-
+09/01/2025,boquet costum rokok ,1,128000,74000,54000,FALSE,-
+10/01/2025,-,0,0,0,0,FALSE,-
+11/01/2025,-,0,0,0,0,FALSE,-
+12/01/2025,-,0,0,0,0,FALSE,-
+13/01/2025,-,0,0,0,0,FALSE,-
+14/01/2025,-,0,0,0,0,FALSE,-
+15/01/2025,-,0,0,0,0,FALSE,-
+16/01/2025,-,0,0,0,0,FALSE,-
+17/01/2025,-,0,0,0,0,FALSE,-
+18/01/2025,-,0,0,0,0,FALSE,-
+19/01/2025,-,0,0,0,0,FALSE,-
+20/01/2025,-,0,0,0,0,FALSE,-
+21/01/2025,-,0,0,0,0,FALSE,-
+22/01/2025,-,0,0,0,0,FALSE,-
+23/01/2025,-,0,0,0,0,FALSE,-
+24/01/2025,-,0,0,0,0,FALSE,-
+25/01/2025,-,0,0,0,0,FALSE,-
+26/01/2025,-,0,0,0,0,FALSE,-
+27/01/2025,-,0,0,0,0,FALSE,-
+28/01/2025,frame birthjday,1,78000,35000,43000,FALSE,-
+29/01/2025,bouquet kopi ,1,48000,28000,20000,TRUE,Tahun Baru Imlek
+29/01/2025,bouquet snack bangbang ,1,64000,37000,27000,TRUE,Tahun Baru Imlek
+29/01/2025,bouquet merah medium ,1,65000,35000,30000,TRUE,Tahun Baru Imlek
+29/01/2025,boquet costum rokok ,1,128000,74000,54000,TRUE,Tahun Baru Imlek
+30/01/2025,-,0,0,0,0,FALSE,-
+31/01/2025,bouquet costum snack jumbo ,1,185000,122000,63000,FALSE,-
+01/02/2025,-,0,0,0,0,FALSE,-
+02/02/2025,-,0,0,0,0,FALSE,-
+03/02/2025,-,0,0,0,0,FALSE,-
+04/02/2025,-,0,0,0,0,FALSE,-
+05/02/2025,-,0,0,0,0,FALSE,-
+06/02/2025,frame birthday ,2,156000,70000,86000,FALSE,-
+07/02/2025,bouquet warna ungu medium ,1,65000,35000,30000,FALSE,-
+08/02/2025,-,0,0,0,0,FALSE,-
+09/02/2025,-,0,0,0,0,FALSE,-
+10/02/2025,-,0,0,0,0,FALSE,-
+11/02/2025,bouquet bunga coklat 3 ,1,125000,86000,39000,FALSE,-
+11/02/2025,bouquet jumbo mawar 100 pc ,1,650000,321000,329000,FALSE,-
+12/02/2025,-,0,0,0,0,FALSE,-
+13/02/2025,frame birthjday,1,78000,35000,43000,FALSE,-
+13/02/2025,frame birthjday,1,78000,35000,43000,FALSE,-
+14/02/2025,bouquet blue 9 bunga ,1,135000,67000,68000,TRUE,Valentine
+14/02/2025,bouquet costum merah ,1,135000,69000,66000,TRUE,Valentine
+14/02/2025,frame birthday besar ,2,156000,70000,86000,TRUE,Valentine
+14/02/2025,bouquet kopi ,1,48000,28000,20000,TRUE,Valentine
+14/02/2025,bouquet kopi inc bunga mini ,2,110000,60000,50000,TRUE,Valentine
+14/02/2025,bouquet blue 9 bunga ,2,270000,134000,136000,TRUE,Valentine
+14/02/2025,frame birthday ,1,78000,35000,43000,TRUE,Valentine
+14/02/2025,bouquet model koran tumbelina mini ,1,88000,53000,35000,TRUE,Valentine
+14/02/2025,bouquet kopi inc bunga mini ,1,55000,30000,25000,TRUE,Valentine
+14/02/2025,bouquet motif koran ,1,88000,53000,35000,TRUE,Valentine
+14/02/2025,frame mini ,1,55000,25000,30000,TRUE,Valentine
+14/02/2025,bouquet costum jepit kamboja ,1,64000,39000,25000,TRUE,Valentine
+14/02/2025,bouquet model koran tumbelina mini ,1,88000,53000,35000,TRUE,Valentine
+14/02/2025,frame besar ,1,78000,35000,43000,TRUE,Valentine
+15/02/2025,-,0,0,0,0,FALSE,-
+16/02/2025,bouquet snack tango ,1,50000,30000,20000,FALSE,-
+16/02/2025,bouquet blue 9 bunga ,1,135000,67000,68000,FALSE,-
+17/02/2025,-,0,0,0,0,FALSE,-
+18/02/2025,-,0,0,0,0,FALSE,-
+19/02/2025,-,0,0,0,0,FALSE,-
+20/02/2025,-,0,0,0,0,FALSE,-
+21/02/2025,-,0,0,0,0,FALSE,-
+22/02/2025,-,0,0,0,0,FALSE,-
+23/02/2025,costum snack bouquet + flwr ,1,265000,197000,68000,FALSE,-
+24/02/2025,-,0,0,0,0,FALSE,-
+25/02/2025,bouquet snack  ,1,45000,25000,20000,FALSE,-
+26/02/2025,-,0,0,0,0,FALSE,-
+27/02/2025,-,0,0,0,0,FALSE,-
+28/02/2025,frame birthday besar ,1,78000,35000,43000,FALSE,-
+01/03/2025,-,0,0,0,0,FALSE,-
+02/03/2025,bouquet rose isi 9,1,135000,67000,68000,FALSE,-
+03/03/2025,-,0,0,0,0,FALSE,-
+04/03/2025,-,0,0,0,0,FALSE,-
+05/03/2025,-,0,0,0,0,FALSE,-
+06/03/2025,-,0,0,0,0,FALSE,-
+07/03/2025,frame costum ,1,78000,35000,43000,FALSE,-
+08/03/2025,-,0,0,0,0,FALSE,-
+09/03/2025,bouquet blue 9 bunga ,1,135000,67000,68000,FALSE,-
+10/03/2025,-,0,0,0,0,FALSE,-
+11/03/2025,bouquet flower medium ,1,65000,38000,27000,FALSE,-
+12/03/2025,-,0,0,0,0,FALSE,-
+13/03/2025,-,0,0,0,0,FALSE,-
+14/03/2025,-,0,0,0,0,FALSE,-
+15/03/2025,-,0,0,0,0,FALSE,-
+16/03/2025,-,0,0,0,0,FALSE,-
+17/03/2025,-,0,0,0,0,FALSE,-
+18/03/2025,-,0,0,0,0,FALSE,-
+19/03/2025,-,0,0,0,0,FALSE,-
+20/03/2025,-,0,0,0,0,FALSE,-
+21/03/2025,-,0,0,0,0,FALSE,-
+22/03/2025,-,0,0,0,0,FALSE,-
+23/03/2025,-,0,0,0,0,FALSE,-
+24/03/2025,-,0,0,0,0,FALSE,-
+25/03/2025,-,0,0,0,0,FALSE,-
+26/03/2025,-,0,0,0,0,FALSE,-
+27/03/2025,-,0,0,0,0,FALSE,-
+28/03/2025,bucket isi 9 bunga ,3,405000,201000,204000,FALSE,-
+28/03/2025,costum snack bouquet + flwr ,1,265000,197000,68000,FALSE,-
+29/03/2025,-,0,0,0,0,FALSE,-
+30/03/2025,-,0,0,0,0,FALSE,-
+31/03/2025,bouquet snack coklat mini ,1,45000,25000,20000,TRUE,Idul Fitri
+31/03/2025,boquet costum rokok ,1,128000,74000,54000,TRUE,Idul Fitri
+31/03/2025,bouquet merah medium ,1,65000,35000,30000,TRUE,Idul Fitri
+31/03/2025,frame birthday ,1,78000,35000,43000,TRUE,Idul Fitri
+31/03/2025,bouquet snack bangbang ,1,64000,37000,27000,TRUE,Idul Fitri
+31/03/2025,frame valentine besar ,1,468000,210000,258000,TRUE,Idul Fitri
+01/04/2025,bouquet isi 9 mawar ,1,135000,97000,38000,TRUE,Idul Fitri
+01/04/2025,bouquet flower medium unggu ,1,65000,35000,30000,TRUE,Idul Fitri
+01/04/2025,frame birthday ,2,110000,50000,60000,TRUE,Idul Fitri
+01/04/2025,bouquet silverqueen mini 4 ,1,110000,67000,43000,TRUE,Idul Fitri
+01/04/2025,bouquet motif koran ,1,88000,53000,35000,TRUE,Idul Fitri
+01/04/2025,bouquet flower ,1,77000,54000,23000,TRUE,Idul Fitri
+01/04/2025,bouquet jumbo mawar 100 pc ,1,650000,321000,329000,TRUE,Idul Fitri
+01/04/2025,frame besar,1,78000,35000,43000,TRUE,Idul Fitri
+01/04/2025,bouquet kopi ,1,48000,28000,20000,TRUE,Idul Fitri
+01/04/2025,frame birthjday,2,156000,70000,86000,TRUE,Idul Fitri
+02/04/2025,-,0,0,0,0,FALSE,-
+03/04/2025,-,0,0,0,0,FALSE,-
+04/04/2025,bouquet motif koran ,1,88000,53000,35000,FALSE,-
+05/04/2025,-,0,0,0,0,FALSE,-
+06/04/2025,bouquet koran costum isi 3bunga ,1,38000,15000,23000,FALSE,-
+07/04/2025,-,0,0,0,0,FALSE,-
+08/04/2025,-,0,0,0,0,FALSE,-
+09/04/2025,bouquet isi 9 mawar ,1,135000,97000,38000,FALSE,-
+09/04/2025,frame birthjday,3,234000,105000,129000,FALSE,-
+10/04/2025,bouquet bunga mix snack top ,2,150000,96000,54000,FALSE,-
+10/04/2025,frame ,1,55000,25000,30000,FALSE,-
+11/04/2025,-,0,0,0,0,FALSE,-
+12/04/2025,-,0,0,0,0,FALSE,-
+13/04/2025,frame valentine ,2,110000,50000,60000,FALSE,-
+14/04/2025,-,0,0,0,0,FALSE,-
+15/04/2025,-,0,0,0,0,FALSE,-
+16/04/2025,-,0,0,0,0,FALSE,-
+17/04/2025,-,0,0,0,0,FALSE,-
+18/04/2025,frame besar ,1,78000,35000,43000,TRUE,Jumat Agung
+18/04/2025,bouquet flower ,1,77000,54000,23000,TRUE,Jumat Agung
+18/04/2025,bouquet costum merah ,1,135000,69000,66000,TRUE,Jumat Agung
+18/04/2025,frame besar ,1,78000,35000,43000,TRUE,Jumat Agung
+18/04/2025,bouquet costum merah ,3,405000,207000,198000,TRUE,Jumat Agung
+18/04/2025,bouquet pocky ,1,84000,62000,22000,TRUE,Jumat Agung
+19/04/2025,-,0,0,0,0,FALSE,-
+20/04/2025,bouquet flower ,1,77000,54000,23000,TRUE,Paskah
+20/04/2025,frame valentine ,1,55000,25000,30000,TRUE,Paskah
+20/04/2025,bucket tumbelina koran ,1,88000,53000,35000,TRUE,Paskah
+20/04/2025,bouquet model koran tumbelina mini ,1,88000,53000,35000,TRUE,Paskah
+20/04/2025,frame birthday besar ,1,78000,35000,43000,TRUE,Paskah
+20/04/2025,bouquet snack tango ,1,50000,30000,20000,TRUE,Paskah
+20/04/2025,bouquet costum jepit kamboja ,3,192000,117000,75000,TRUE,Paskah
+21/04/2025,-,0,0,0,0,FALSE,-
+22/04/2025,bouquet koran medium ,1,65000,38000,27000,FALSE,-
+23/04/2025,-,0,0,0,0,FALSE,-
+24/04/2025,-,0,0,0,0,FALSE,-
+25/04/2025,-,0,0,0,0,FALSE,-
+26/04/2025,-,0,0,0,0,FALSE,-
+27/04/2025,-,0,0,0,0,FALSE,-
+28/04/2025,-,0,0,0,0,FALSE,-
+29/04/2025,-,0,0,0,0,FALSE,-
+30/04/2025,-,0,0,0,0,FALSE,-
+01/05/2025,-,0,0,0,0,TRUE,Hari Buruh
+02/05/2025,bouquet pocky ,1,84000,62000,22000,FALSE,-
+03/05/2025,frame birthjday,1,78000,35000,43000,FALSE,-
+04/05/2025,costum snack bouquet + flwr ,1,265000,197000,68000,FALSE,-
+05/05/2025,-,0,0,0,0,FALSE,-
+06/05/2025,bouquet isi 9 mawar ,1,135000,97000,38000,FALSE,-
+06/05/2025,bouquet bunga coklat 3 ,1,125000,86000,39000,FALSE,-
+07/05/2025,-,0,0,0,0,FALSE,-
+08/05/2025,-,0,0,0,0,FALSE,-
+09/05/2025,-,0,0,0,0,FALSE,-
+10/05/2025,bouquet snack tango ,1,50000,30000,20000,FALSE,-
+11/05/2025,-,0,0,0,0,FALSE,-
+12/05/2025,-,0,0,0,0,TRUE,Hari Raya Waisak
+13/05/2025,boquet costum rokok ,1,128000,74000,54000,FALSE,-
+13/05/2025,bouquet koran medium ,1,65000,38000,27000,FALSE,-
+14/05/2025,bouquet kopi ,1,48000,28000,20000,FALSE,-
+15/05/2025,-,0,0,0,0,FALSE,-
+16/05/2025,-,0,0,0,0,FALSE,-
+17/05/2025,frame besar ,1,78000,35000,43000,FALSE,-
+18/05/2025,-,0,0,0,0,FALSE,-
+19/05/2025,-,0,0,0,0,FALSE,-
+20/05/2025,-,0,0,0,0,FALSE,-
+21/05/2025,-,0,0,0,0,FALSE,-
+22/05/2025,-,0,0,0,0,FALSE,-
+23/05/2025,-,0,0,0,0,FALSE,-
+24/05/2025,-,0,0,0,0,FALSE,-
+25/05/2025,-,0,0,0,0,FALSE,-
+26/05/2025,bouquet silverqueen ,1,115000,73000,42000,FALSE,-
+27/05/2025,-,0,0,0,0,FALSE,-
+28/05/2025,-,0,0,0,0,FALSE,-
+29/05/2025,-,0,0,0,0,TRUE,Kenaikan Yesus Kristus
+30/05/2025,-,0,0,0,0,FALSE,-
+31/05/2025,-,0,0,0,0,FALSE,-
+01/06/2025,-,0,0,0,0,TRUE,Hari Lahir Pancasila
+02/06/2025,-,0,0,0,0,FALSE,-
+03/06/2025,-,0,0,0,0,FALSE,-
+04/06/2025,-,0,0,0,0,FALSE,-
+05/06/2025,snack bouquet ,1,50000,25000,25000,FALSE,-
+06/06/2025,frame besar,1,78000,35000,43000,TRUE,Idul Adha
+06/06/2025,bouquet model koran tumbelina mini ,1,88000,53000,35000,TRUE,Idul Adha
+06/06/2025,bouquet merah medium ,1,65000,35000,30000,TRUE,Idul Adha
+06/06/2025,frame birthjday,1,78000,35000,43000,TRUE,Idul Adha
+06/06/2025,frame birthday ,1,78000,35000,43000,TRUE,Idul Adha
+06/06/2025,frame birthday ,1,78000,35000,43000,TRUE,Idul Adha
+06/06/2025,bouquet bunga mix snack top ,1,75000,48000,27000,TRUE,Idul Adha
+07/06/2025,bouquet kopii ,1,50000,25000,25000,FALSE,-
+07/06/2025,bouquet koran costum isi 3bunga ,1,38000,15000,23000,FALSE,-
+08/06/2025,-,0,0,0,0,FALSE,-
+09/06/2025,-,0,0,0,0,FALSE,-
+10/06/2025,-,0,0,0,0,FALSE,-
+11/06/2025,-,0,0,0,0,FALSE,-
+12/06/2025,-,0,0,0,0,FALSE,-
+13/06/2025,-,0,0,0,0,FALSE,-
+14/06/2025,-,0,0,0,0,FALSE,-
+15/06/2025,-,0,0,0,0,FALSE,-
+16/06/2025,bucket kopi ,1,50000,25000,25000,FALSE,-
+17/06/2025,-,0,0,0,0,FALSE,-
+18/06/2025,-,0,0,0,0,FALSE,-
+19/06/2025,-,0,0,0,0,FALSE,-
+20/06/2025,-,0,0,0,0,FALSE,-
+21/06/2025,buckert costum rokok ,1,135000,103000,32000,FALSE,-
+21/06/2025,bouquet bunga mix snack top ,1,75000,48000,27000,FALSE,-
+22/06/2025,-,0,0,0,0,FALSE,-
+23/06/2025,-,0,0,0,0,FALSE,-
+24/06/2025,-,0,0,0,0,FALSE,-
+25/06/2025,-,0,0,0,0,FALSE,-
+26/06/2025,-,0,0,0,0,FALSE,-
+27/06/2025,-,0,0,0,0,TRUE,Tahun Baru Islam
+28/06/2025,-,0,0,0,0,FALSE,-
+29/06/2025,bouquet isi 9 mawar ,1,135000,97000,38000,FALSE,-
+30/06/2025,-,0,0,0,0,FALSE,-
+01/07/2025,-,0,0,0,0,FALSE,-
+02/07/2025,bouquet costum snack jumbo ,1,185000,122000,63000,FALSE,-
+03/07/2025,-,0,0,0,0,FALSE,-
+04/07/2025,-,0,0,0,0,FALSE,-
+05/07/2025,-,0,0,0,0,FALSE,-
+06/07/2025,-,0,0,0,0,FALSE,-
+07/07/2025,-,0,0,0,0,FALSE,-
+08/07/2025,-,0,0,0,0,FALSE,-
+09/07/2025,-,0,0,0,0,FALSE,-
+10/07/2025,-,0,0,0,0,FALSE,-
+11/07/2025,bouquet bunga mix snack top ,1,75000,48000,27000,FALSE,-
+12/07/2025,-,0,0,0,0,FALSE,-
+13/07/2025,boquet costum rokok ,1,128000,74000,54000,FALSE,-
+14/07/2025,-,0,0,0,0,FALSE,-
+15/07/2025,bouquet kopi inc bunga mini ,1,55000,30000,25000,FALSE,-
+16/07/2025,-,0,0,0,0,FALSE,-
+17/07/2025,-,0,0,0,0,FALSE,-
+18/07/2025,bouquet tumbelina koran ,2,176000,106000,70000,FALSE,-
+19/07/2025,-,0,0,0,0,FALSE,-
+20/07/2025,bouquet bang bang mix rokok ,1,138000,87000,51000,FALSE,-
+20/07/2025,bouquet tumbelina koran ,1,88000,53000,35000,FALSE,-
+21/07/2025,-,0,0,0,0,FALSE,-
+22/07/2025,-,0,0,0,0,FALSE,-
+23/07/2025,-,0,0,0,0,FALSE,-
+24/07/2025,-,0,0,0,0,FALSE,-
+25/07/2025,-,0,0,0,0,FALSE,-
+26/07/2025,-,0,0,0,0,FALSE,-
+27/07/2025,bouquet snack bangbang ,1,64000,37000,27000,FALSE,-
+28/07/2025,-,0,0,0,0,FALSE,-
+29/07/2025,-,0,0,0,0,FALSE,-
+30/07/2025,-,0,0,0,0,FALSE,-
+31/07/2025,-,0,0,0,0,FALSE,-
+01/08/2025,bucket tumbelina koran ,1,88000,53000,35000,FALSE,-
+02/08/2025,bucket costum rokok ,1,128000,72000,56000,FALSE,-
+03/08/2025,-,0,0,0,0,FALSE,-
+04/08/2025,-,0,0,0,0,FALSE,-
+05/08/2025,-,0,0,0,0,FALSE,-
+06/08/2025,-,0,0,0,0,FALSE,-
+07/08/2025,-,0,0,0,0,FALSE,-
+08/08/2025,-,0,0,0,0,FALSE,-
+09/08/2025,-,0,0,0,0,FALSE,-
+10/08/2025,frame valentine besar ,2,936000,420000,516000,FALSE,-
+11/08/2025,-,0,0,0,0,FALSE,-
+12/08/2025,-,0,0,0,0,FALSE,-
+13/08/2025,-,0,0,0,0,FALSE,-
+14/08/2025,-,0,0,0,0,FALSE,-
+15/08/2025,frame valentine ,1,55000,25000,30000,FALSE,-
+16/08/2025,-,0,0,0,0,FALSE,-
+17/08/2025,costum snack bouquet + flwr ,1,265000,197000,68000,TRUE,Hari Kemerdekaan RI
+18/08/2025,bouquet snack coklat mini ,1,45000,25000,20000,FALSE,-
+18/08/2025,bouquet costum foto ,3,180000,90000,90000,FALSE,-
+19/08/2025,-,0,0,0,0,FALSE,-
+20/08/2025,-,0,0,0,0,FALSE,-
+21/08/2025,-,0,0,0,0,FALSE,-
+22/08/2025,-,0,0,0,0,FALSE,-
+23/08/2025,-,0,0,0,0,FALSE,-
+24/08/2025,-,0,0,0,0,FALSE,-
+25/08/2025,-,0,0,0,0,FALSE,-
+26/08/2025,-,0,0,0,0,FALSE,-
+27/08/2025,bouquet jumbo mawar 100 pc ,1,650000,321000,329000,FALSE,-
+28/08/2025,-,0,0,0,0,FALSE,-
+29/08/2025,-,0,0,0,0,FALSE,-
+30/08/2025,-,0,0,0,0,FALSE,-
+31/08/2025,-,0,0,0,0,FALSE,-
+01/09/2025,-,0,0,0,0,FALSE,-
+02/09/2025,bouquet tumbelina koran ,1,88000,53000,35000,FALSE,-
+03/09/2025,bouquet kopi ,1,48000,28000,20000,FALSE,-
+03/09/2025,bouquet bang bang mix rokok ,2,276000,174000,102000,FALSE,-
+04/09/2025,costum bouquet snack+ rokok ,1,140000,106000,34000,FALSE,-
+05/09/2025,-,0,0,0,0,TRUE,Maulid Nabi Muhammad SAW
+06/09/2025,frame costum ,1,78000,35000,43000,FALSE,-
+07/09/2025,-,0,0,0,0,FALSE,-
+08/09/2025,-,0,0,0,0,FALSE,-
+09/09/2025,-,0,0,0,0,FALSE,-
+10/09/2025,bouquet silverqueen mini 4 ,1,110000,67000,43000,FALSE,-
+11/09/2025,bouquet costum merah ,1,135000,69000,66000,FALSE,-
+12/09/2025,-,0,0,0,0,FALSE,-
+13/09/2025,-,0,0,0,0,FALSE,-
+14/09/2025,-,0,0,0,0,FALSE,-
+15/09/2025,-,0,0,0,0,FALSE,-
+16/09/2025,-,0,0,0,0,FALSE,-
+17/09/2025,-,0,0,0,0,FALSE,-
+18/09/2025,-,0,0,0,0,FALSE,-
+19/09/2025,-,0,0,0,0,FALSE,-
+20/09/2025,-,0,0,0,0,FALSE,-
+21/09/2025,-,0,0,0,0,FALSE,-
+22/09/2025,-,0,0,0,0,FALSE,-
+23/09/2025,-,0,0,0,0,FALSE,-
+24/09/2025,-,0,0,0,0,FALSE,-
+25/09/2025,buckert costum rokok ,1,135000,103000,32000,FALSE,-
+26/09/2025,-,0,0,0,0,FALSE,-
+27/09/2025,frame birthjday,1,78000,35000,43000,FALSE,-
+27/09/2025,costum snack bouquet + flwr ,1,265000,197000,68000,FALSE,-
+28/09/2025,-,0,0,0,0,FALSE,-
+29/09/2025,bouquet rose isi 9,3,405000,201000,204000,FALSE,-
+30/09/2025,-,0,0,0,0,FALSE,-
+01/10/2025,snack bouquet ,2,100000,50000,50000,FALSE,-
+02/10/2025,bouquet costum snack jumbo ,1,185000,122000,63000,FALSE,-
+03/10/2025,bouquet flower medium red ,1,65000,35000,30000,FALSE,-
+03/10/2025,bucket kopi ,1,50000,25000,25000,FALSE,-
+04/10/2025,-,0,0,0,0,FALSE,-
+05/10/2025,-,0,0,0,0,FALSE,-
+06/10/2025,-,0,0,0,0,FALSE,-
+07/10/2025,bucket costum rokok ,2,256000,144000,112000,FALSE,-
+08/10/2025,bouquet jumbo mawar 100 pc ,1,650000,321000,329000,FALSE,-
+08/10/2025,bouquet model koran tumbelina mini ,1,88000,53000,35000,FALSE,-
+09/10/2025,-,0,0,0,0,FALSE,-
+10/10/2025,-,0,0,0,0,FALSE,-
+11/10/2025,-,0,0,0,0,FALSE,-
+12/10/2025,-,0,0,0,0,FALSE,-
+13/10/2025,-,0,0,0,0,FALSE,-
+14/10/2025,-,0,0,0,0,FALSE,-
+15/10/2025,-,0,0,0,0,FALSE,-
+16/10/2025,-,0,0,0,0,FALSE,-
+17/10/2025,-,0,0,0,0,FALSE,-
+18/10/2025,-,0,0,0,0,FALSE,-
+19/10/2025,-,0,0,0,0,FALSE,-
+20/10/2025,-,0,0,0,0,FALSE,-
+21/10/2025,-,0,0,0,0,FALSE,-
+22/10/2025,-,0,0,0,0,FALSE,-
+23/10/2025,-,0,0,0,0,FALSE,-
+24/10/2025,-,0,0,0,0,FALSE,-
+25/10/2025,frame mini ,1,55000,25000,30000,FALSE,-
+26/10/2025,-,0,0,0,0,FALSE,-
+27/10/2025,-,0,0,0,0,FALSE,-
+28/10/2025,bucket sip ,1,45000,25000,20000,FALSE,-
+29/10/2025,-,0,0,0,0,FALSE,-
+30/10/2025,-,0,0,0,0,FALSE,-
+31/10/2025,-,0,0,0,0,FALSE,-
+01/11/2025,-,0,0,0,0,FALSE,-
+02/11/2025,bouquet motif koran ,1,88000,53000,35000,FALSE,-
+02/11/2025,bouquet bunga coklat 3 ,1,125000,86000,39000,FALSE,-
+03/11/2025,costum snack bouquet + flwr ,1,265000,197000,68000,FALSE,-
+04/11/2025,-,0,0,0,0,FALSE,-
+05/11/2025,-,0,0,0,0,FALSE,-
+06/11/2025,-,0,0,0,0,FALSE,-
+07/11/2025,-,0,0,0,0,FALSE,-
+08/11/2025,bouquet costum jepit kamboja ,1,64000,39000,25000,FALSE,-
+09/11/2025,-,0,0,0,0,FALSE,-
+10/11/2025,bouquet snack  ,1,45000,25000,20000,FALSE,-
+11/11/2025,bouquet bang bang mix rokok ,1,138000,87000,51000,FALSE,-
+12/11/2025,-,0,0,0,0,FALSE,-
+13/11/2025,-,0,0,0,0,FALSE,-
+14/11/2025,-,0,0,0,0,FALSE,-
+15/11/2025,-,0,0,0,0,FALSE,-
+16/11/2025,-,0,0,0,0,FALSE,-
+17/11/2025,bouquet flower costum ,1,82000,49000,33000,FALSE,-
+18/11/2025,-,0,0,0,0,FALSE,-
+19/11/2025,-,0,0,0,0,FALSE,-
+20/11/2025,-,0,0,0,0,FALSE,-
+21/11/2025,-,0,0,0,0,FALSE,-
+22/11/2025,-,0,0,0,0,FALSE,-
+23/11/2025,-,0,0,0,0,FALSE,-
+24/11/2025,snack bouquet ,3,150000,75000,75000,FALSE,-
+25/11/2025,bouquet koran costum isi 3bunga ,1,38000,15000,23000,TRUE,Hari Guru Nasional
+25/11/2025,bucket isi 9 bunga ,1,135000,67000,68000,TRUE,Hari Guru Nasional
+25/11/2025,bucket costum rokok ,1,128000,72000,56000,TRUE,Hari Guru Nasional
+25/11/2025,bouquet costum jepit kamboja ,1,64000,39000,25000,TRUE,Hari Guru Nasional
+25/11/2025,bouquet flower ,1,77000,54000,23000,TRUE,Hari Guru Nasional
+25/11/2025,bucket kopi ,1,50000,25000,25000,TRUE,Hari Guru Nasional
+25/11/2025,bouquet snack  ,2,90000,50000,40000,TRUE,Hari Guru Nasional
+25/11/2025,bouquet silverqueen ,1,115000,73000,42000,TRUE,Hari Guru Nasional
+25/11/2025,frame ,1,55000,25000,30000,TRUE,Hari Guru Nasional
+25/11/2025,bouquet bunga coklat 3 ,1,125000,86000,39000,TRUE,Hari Guru Nasional
+25/11/2025,bouquet warna ungu medium ,1,65000,35000,30000,TRUE,Hari Guru Nasional
+25/11/2025,boquet costum rokok ,1,128000,74000,54000,TRUE,Hari Guru Nasional
+25/11/2025,bouquet motif koran ,2,176000,106000,70000,TRUE,Hari Guru Nasional
+25/11/2025,frame mini ,2,110000,50000,60000,TRUE,Hari Guru Nasional
+25/11/2025,buckert costum rokok ,1,135000,103000,32000,TRUE,Hari Guru Nasional
+26/11/2025,bouquet bang bang mix rokok ,1,138000,87000,51000,FALSE,-
+27/11/2025,-,0,0,0,0,FALSE,-
+28/11/2025,-,0,0,0,0,FALSE,-
+29/11/2025,-,0,0,0,0,FALSE,-
+30/11/2025,-,0,0,0,0,FALSE,-
+01/12/2025,-,0,0,0,0,FALSE,-
+02/12/2025,-,0,0,0,0,FALSE,-
+03/12/2025,-,0,0,0,0,FALSE,-
+04/12/2025,-,0,0,0,0,FALSE,-
+05/12/2025,-,0,0,0,0,FALSE,-
+06/12/2025,-,0,0,0,0,FALSE,-
+07/12/2025,-,0,0,0,0,FALSE,-
+08/12/2025,-,0,0,0,0,FALSE,-
+09/12/2025,-,0,0,0,0,FALSE,-
+10/12/2025,-,0,0,0,0,FALSE,-
+11/12/2025,-,0,0,0,0,FALSE,-
+12/12/2025,bouquet koran medium ,1,65000,38000,27000,FALSE,-
+13/12/2025,-,0,0,0,0,FALSE,-
+14/12/2025,-,0,0,0,0,FALSE,-
+15/12/2025,-,0,0,0,0,FALSE,-
+16/12/2025,-,0,0,0,0,FALSE,-
+17/12/2025,-,0,0,0,0,FALSE,-
+18/12/2025,-,0,0,0,0,FALSE,-
+19/12/2025,-,0,0,0,0,FALSE,-
+20/12/2025,-,0,0,0,0,FALSE,-
+21/12/2025,-,0,0,0,0,FALSE,-
+22/12/2025,costum bouquet snack+ rokok ,1,140000,106000,34000,TRUE,Hari Ibu
+22/12/2025,bouquet flower medium unggu ,1,65000,35000,30000,TRUE,Hari Ibu
+22/12/2025,costum snack bouquet + flwr ,2,530000,394000,136000,TRUE,Hari Ibu
+22/12/2025,bouquet warna ungu medium ,2,130000,70000,60000,TRUE,Hari Ibu
+22/12/2025,bouquet snack bangbang ,1,64000,37000,27000,TRUE,Hari Ibu
+22/12/2025,bouquet rose isi 9,1,135000,67000,68000,TRUE,Hari Ibu
+22/12/2025,bouquet koran medium ,1,65000,38000,27000,TRUE,Hari Ibu
+22/12/2025,bouquet kopi ,1,48000,28000,20000,TRUE,Hari Ibu
+22/12/2025,bouquet snack bangbang ,1,64000,37000,27000,TRUE,Hari Ibu
+22/12/2025,bucket costum rokok ,1,128000,72000,56000,TRUE,Hari Ibu
+22/12/2025,bucket kopi ,1,50000,25000,25000,TRUE,Hari Ibu
+23/12/2025,-,0,0,0,0,FALSE,-
+24/12/2025,-,0,0,0,0,FALSE,-
+25/12/2025,bouquet warna ungu medium ,1,65000,35000,30000,TRUE,Hari Raya Natal
+25/12/2025,bouquet kopi inc bunga mini ,2,110000,60000,50000,TRUE,Hari Raya Natal
+25/12/2025,boquet costum rokok ,1,128000,74000,54000,TRUE,Hari Raya Natal
+25/12/2025,bouquet rose isi 9,1,135000,67000,68000,TRUE,Hari Raya Natal
+25/12/2025,bouquet snack bangbang ,1,64000,37000,27000,TRUE,Hari Raya Natal
+25/12/2025,bouquet warna ungu medium ,1,65000,35000,30000,TRUE,Hari Raya Natal
+25/12/2025,bucket isi 9 bunga ,1,135000,67000,68000,TRUE,Hari Raya Natal
+25/12/2025,bucket tumbelina koran ,1,88000,53000,35000,TRUE,Hari Raya Natal
+25/12/2025,frame mini ,1,55000,25000,30000,TRUE,Hari Raya Natal
+25/12/2025,frame birthday besar ,1,78000,35000,43000,TRUE,Hari Raya Natal
+25/12/2025,bouquet snack tango ,1,50000,30000,20000,TRUE,Hari Raya Natal
+25/12/2025,bucket kopi ,1,50000,25000,25000,TRUE,Hari Raya Natal
+25/12/2025,bouquet snack  ,1,45000,25000,20000,TRUE,Hari Raya Natal
+25/12/2025,costum bouquet snack+ rokok ,1,140000,106000,34000,TRUE,Hari Raya Natal
+25/12/2025,bouquet tumbelina koran ,1,88000,53000,35000,TRUE,Hari Raya Natal
+25/12/2025,bucket kopi ,1,50000,25000,25000,TRUE,Hari Raya Natal
+26/12/2025,-,0,0,0,0,FALSE,-
+27/12/2025,-,0,0,0,0,FALSE,-
+28/12/2025,-,0,0,0,0,FALSE,-
+29/12/2025,-,0,0,0,0,FALSE,-
+30/12/2025,-,0,0,0,0,FALSE,-
+31/12/2025,-,0,0,0,0,FALSE,-
+01/01/2026,-,0,0,0,0,TRUE,Tahun Baru Masehi
+02/01/2026,-,0,0,0,0,FALSE,-
+03/01/2026,bouquet flower medium unggu ,1,65000,35000,30000,FALSE,-
+04/01/2026,-,0,0,0,0,FALSE,-
+05/01/2026,-,0,0,0,0,FALSE,-
+06/01/2026,bouquet merah medium ,1,65000,35000,30000,FALSE,-
+07/01/2026,-,0,0,0,0,FALSE,-
+08/01/2026,-,0,0,0,0,FALSE,-
+09/01/2026,-,0,0,0,0,FALSE,-
+10/01/2026,-,0,0,0,0,FALSE,-
+11/01/2026,-,0,0,0,0,FALSE,-
+12/01/2026,-,0,0,0,0,FALSE,-
+13/01/2026,bucket red costum ,1,79000,45000,34000,FALSE,-
+14/01/2026,-,0,0,0,0,FALSE,-
+15/01/2026,-,0,0,0,0,FALSE,-
+16/01/2026,frame birthday ,1,55000,25000,30000,FALSE,-
+16/01/2026,boquet costum rokok ,2,256000,148000,108000,FALSE,-
+17/01/2026,-,0,0,0,0,FALSE,-
+18/01/2026,bouquet koran costum isi 3bunga ,1,38000,15000,23000,FALSE,-
+18/01/2026,bucket tumbelina koran ,1,88000,53000,35000,FALSE,-
+19/01/2026,-,0,0,0,0,FALSE,-
+20/01/2026,-,0,0,0,0,FALSE,-
+21/01/2026,-,0,0,0,0,FALSE,-
+22/01/2026,bouquet bunga mix snack top ,1,75000,48000,27000,FALSE,-
+23/01/2026,-,0,0,0,0,FALSE,-
+24/01/2026,-,0,0,0,0,FALSE,-
+25/01/2026,-,0,0,0,0,FALSE,-
+26/01/2026,-,0,0,0,0,FALSE,-
+27/01/2026,-,0,0,0,0,FALSE,-
+28/01/2026,-,0,0,0,0,FALSE,-
+29/01/2026,-,0,0,0,0,FALSE,-
+30/01/2026,-,0,0,0,0,FALSE,-
+31/01/2026,-,0,0,0,0,FALSE,-
+01/02/2026,-,0,0,0,0,FALSE,-
+02/02/2026,-,0,0,0,0,FALSE,-
+03/02/2026,-,0,0,0,0,FALSE,-
+04/02/2026,-,0,0,0,0,FALSE,-
+05/02/2026,-,0,0,0,0,FALSE,-
+06/02/2026,-,0,0,0,0,FALSE,-
+07/02/2026,bouquet snack sip ,1,45000,25000,20000,FALSE,-
+07/02/2026,bouquet flower costum ,1,82000,49000,33000,FALSE,-
+08/02/2026,-,0,0,0,0,FALSE,-
+09/02/2026,-,0,0,0,0,FALSE,-
+10/02/2026,-,0,0,0,0,FALSE,-
+11/02/2026,-,0,0,0,0,FALSE,-
+12/02/2026,-,0,0,0,0,FALSE,-
+13/02/2026,-,0,0,0,0,FALSE,-
+14/02/2026,bouquet bunga mix snack top ,1,75000,48000,27000,TRUE,Valentine
+14/02/2026,frame birthjday,1,78000,35000,43000,TRUE,Valentine
+14/02/2026,frame birthday ,1,78000,35000,43000,TRUE,Valentine
+14/02/2026,bucket sip ,1,45000,25000,20000,TRUE,Valentine
+14/02/2026,bouquet warna ungu medium ,1,65000,35000,30000,TRUE,Valentine
+14/02/2026,bouquet merah medium ,1,65000,35000,30000,TRUE,Valentine
+14/02/2026,bucket tumbelina koran ,1,88000,53000,35000,TRUE,Valentine
+14/02/2026,bouquet motif koran ,1,88000,53000,35000,TRUE,Valentine
+14/02/2026,bouquet kopi ,1,48000,28000,20000,TRUE,Valentine
+14/02/2026,bouquet flower medium unggu ,1,65000,35000,30000,TRUE,Valentine
+15/02/2026,bucket isi 9 bunga ,1,135000,67000,68000,FALSE,-
+16/02/2026,bouquet costum merah ,2,270000,138000,132000,FALSE,-
+17/02/2026,bouquet flower medium red ,1,65000,35000,30000,TRUE,Tahun Baru Imlek
+17/02/2026,bouquet flower costum ,1,82000,49000,33000,TRUE,Tahun Baru Imlek
+17/02/2026,bouquet model koran tumbelina mini ,1,88000,53000,35000,TRUE,Tahun Baru Imlek
+18/02/2026,-,0,0,0,0,FALSE,-
+19/02/2026,-,0,0,0,0,FALSE,-
+20/02/2026,-,0,0,0,0,FALSE,-
+21/02/2026,-,0,0,0,0,FALSE,-
+22/02/2026,bucket red costum ,1,79000,45000,34000,FALSE,-
+23/02/2026,-,0,0,0,0,FALSE,-
+24/02/2026,-,0,0,0,0,FALSE,-
+25/02/2026,-,0,0,0,0,FALSE,-
+26/02/2026,-,0,0,0,0,FALSE,-
+27/02/2026,-,0,0,0,0,FALSE,-
+28/02/2026,-,0,0,0,0,FALSE,-
+01/03/2026,-,0,0,0,0,FALSE,-
+02/03/2026,-,0,0,0,0,FALSE,-
+03/03/2026,frame besar,1,78000,35000,43000,FALSE,-
+04/03/2026,bouquet costum snack jumbo ,3,555000,366000,189000,FALSE,-
+05/03/2026,-,0,0,0,0,FALSE,-
+06/03/2026,-,0,0,0,0,FALSE,-
+07/03/2026,-,0,0,0,0,FALSE,-
+08/03/2026,-,0,0,0,0,FALSE,-
+09/03/2026,-,0,0,0,0,FALSE,-
+10/03/2026,-,0,0,0,0,FALSE,-
+11/03/2026,-,0,0,0,0,FALSE,-
+12/03/2026,-,0,0,0,0,FALSE,-
+13/03/2026,-,0,0,0,0,FALSE,-
+14/03/2026,-,0,0,0,0,FALSE,-
+15/03/2026,-,0,0,0,0,FALSE,-
+16/03/2026,-,0,0,0,0,FALSE,-
+17/03/2026,-,0,0,0,0,FALSE,-
+18/03/2026,-,0,0,0,0,FALSE,-
+19/03/2026,-,0,0,0,0,FALSE,-
+20/03/2026,bucket kopi ,1,50000,25000,25000,TRUE,Idul Fitri
+20/03/2026,bouquet red flower ,1,74000,42000,32000,TRUE,Idul Fitri
+20/03/2026,bouquet costum foto ,1,60000,30000,30000,TRUE,Idul Fitri
+20/03/2026,bouquet rose isi 9,1,135000,67000,68000,TRUE,Idul Fitri
+20/03/2026,boquet costum rokok ,2,256000,148000,108000,TRUE,Idul Fitri
+20/03/2026,bouquet koran medium ,1,65000,38000,27000,TRUE,Idul Fitri
+20/03/2026,frame valentine ,1,385000,175000,210000,TRUE,Idul Fitri
+20/03/2026,frame mini ,1,55000,25000,30000,TRUE,Idul Fitri
+20/03/2026,frame mini ,2,110000,50000,60000,TRUE,Idul Fitri
+20/03/2026,bouquet costum snack jumbo ,1,185000,122000,63000,TRUE,Idul Fitri
+21/03/2026,bouquet flower costum ,1,82000,49000,33000,TRUE,Idul Fitri
+21/03/2026,bouquet flower medium red ,1,65000,35000,30000,TRUE,Idul Fitri
+21/03/2026,bouquet costum merah ,2,270000,138000,132000,TRUE,Idul Fitri
+21/03/2026,frame besar,1,78000,35000,43000,TRUE,Idul Fitri
+21/03/2026,bucket kopi ,1,50000,25000,25000,TRUE,Idul Fitri
+21/03/2026,bouquet flower costum ,1,82000,49000,33000,TRUE,Idul Fitri
+21/03/2026,frame birthjday,1,78000,35000,43000,TRUE,Idul Fitri
+21/03/2026,bouquet tumbelina koran ,1,88000,53000,35000,TRUE,Idul Fitri
+21/03/2026,bouquet costum foto ,1,60000,30000,30000,TRUE,Idul Fitri
+21/03/2026,frame birthday ,2,156000,70000,86000,TRUE,Idul Fitri
+22/03/2026,bouquet snack  ,1,45000,25000,20000,FALSE,-
+23/03/2026,-,0,0,0,0,FALSE,-
+24/03/2026,-,0,0,0,0,FALSE,-
+25/03/2026,-,0,0,0,0,FALSE,-
+26/03/2026,bouquet blue 9 bunga ,2,270000,134000,136000,FALSE,-
+27/03/2026,-,0,0,0,0,FALSE,-
+28/03/2026,-,0,0,0,0,FALSE,-
+29/03/2026,-,0,0,0,0,FALSE,-
+30/03/2026,-,0,0,0,0,FALSE,-
+31/03/2026,-,0,0,0,0,FALSE,-
+01/04/2026,bouquet merah medium ,1,65000,35000,30000,FALSE,-
+02/04/2026,-,0,0,0,0,FALSE,-
+03/04/2026,bouquet costum merah ,1,135000,69000,66000,TRUE,Jumat Agung
+03/04/2026,bouquet snack bangbang ,1,64000,37000,27000,TRUE,Jumat Agung
+03/04/2026,bouquet motif koran ,1,88000,53000,35000,TRUE,Jumat Agung
+03/04/2026,money bouquet ,1,75000,35000,40000,TRUE,Jumat Agung
+03/04/2026,boquet costum rokok ,1,128000,74000,54000,TRUE,Jumat Agung
+03/04/2026,frame birthday besar ,1,78000,35000,43000,TRUE,Jumat Agung
+04/04/2026,-,0,0,0,0,FALSE,-
+05/04/2026,frame birthday ,1,55000,25000,30000,TRUE,Paskah
+05/04/2026,bouquet merah medium ,1,65000,35000,30000,TRUE,Paskah
+05/04/2026,bouquet kopi inc bunga mini ,1,55000,30000,25000,TRUE,Paskah
+05/04/2026,frame besar,1,78000,35000,43000,TRUE,Paskah
+05/04/2026,costum snack bouquet + flwr ,1,265000,197000,68000,TRUE,Paskah
+05/04/2026,bouquet pocky ,3,252000,186000,66000,TRUE,Paskah
+06/04/2026,-,0,0,0,0,FALSE,-
+07/04/2026,-,0,0,0,0,FALSE,-
+08/04/2026,-,0,0,0,0,FALSE,-
+09/04/2026,costum snack bouquet + flwr ,1,265000,197000,68000,FALSE,-
+09/04/2026,frame birthday besar ,1,78000,35000,43000,FALSE,-
+10/04/2026,-,0,0,0,0,FALSE,-
+11/04/2026,-,0,0,0,0,FALSE,-
+12/04/2026,frame valentine besar ,1,468000,210000,258000,FALSE,-
+13/04/2026,-,0,0,0,0,FALSE,-
+14/04/2026,-,0,0,0,0,FALSE,-
