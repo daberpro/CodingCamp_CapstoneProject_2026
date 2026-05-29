@@ -22,7 +22,7 @@ passport.use(new google_login.Strategy({
 
       const { data: existingUser, error: searchError } = await supabase
         .from('user')
-        .select('id, username, email, roles, avatar_url')
+        .select('id, username, email, roles, avatar_url, status_verified')
         .eq('email', email)
         .single();
 
@@ -33,10 +33,11 @@ passport.use(new google_login.Strategy({
       const { data: newUser, error: insertError } = await supabase
         .from('user')
         .insert([{ 
-            email: email, 
-            username: username, 
+            email: email,
+            username: username,
             avatar_url: avatar_url,
-            roles: 'kasir'
+            roles: 'kasir',
+            status_verified: 'not-verified'
         }])
         .select()
         .single();
@@ -63,7 +64,7 @@ passport.use(new LocalStrategy({
     try {
       const { data: user, error } = await supabase
         .from('user')
-        .select('id, username, password, email, roles, avatar_url')
+        .select('id, username, password, email, roles, avatar_url, status_verified')
         .eq('email', email)
         .single();
 
@@ -92,7 +93,7 @@ passport.deserializeUser(async (id, done) => {
   try {
     const { data: user, error } = await supabase
       .from('user')
-      .select('id, username, email, roles, avatar_url')
+      .select('id, username, email, roles, avatar_url, status_verified')
       .eq('id', id)
       .single();
       

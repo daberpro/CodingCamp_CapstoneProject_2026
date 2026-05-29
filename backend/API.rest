@@ -60,10 +60,20 @@ X-CSRF-Token: {{csrfToken}}
   "email": "newemail@example.com",
   "password": "newPassword123",
   "avatar_url": "https://example.com/newavatarr.jpg",
-  "roles": "admin"
+  "roles": "admin",
+  "status_verified": "verified"
 }
 
-### 9. Delete User (Super Admin & Admin can delete kasir)
+### 9. Update User Verification Status (Admin & Super Admin only)
+PATCH http://localhost:5000/api/v1/user/1/status-verified
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "status_verified": "verified"
+}
+
+### 10. Delete User (Super Admin & Admin can delete kasir)
 DELETE http://localhost:5000/api/v1/user/1
 Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}
@@ -72,17 +82,17 @@ X-CSRF-Token: {{csrfToken}}
 ### MATERIALS MANAGEMENT
 ### ============================================================
 
-### 10. Get All Materials
+### 11. Get All Materials
 GET http://localhost:5000/api/v1/materials
 Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}
 
-### 11. Get Material by ID
+### 12. Get Material by ID
 GET http://localhost:5000/api/v1/materials/MAT001
 Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}
 
-### 12. Create New Material (Admin only)
+### 13. Create New Material (Admin only)
 POST http://localhost:5000/api/v1/materials
 Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}
@@ -96,7 +106,7 @@ X-CSRF-Token: {{csrfToken}}
   "wastage_rate": 0.05
 }
 
-### 13. Update Material (Admin only)
+### 14. Update Material (Admin only)
 PUT http://localhost:5000/api/v1/materials/MAT001
 Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}
@@ -110,8 +120,47 @@ X-CSRF-Token: {{csrfToken}}
   "wastage_rate": 0.03
 }
 
-### 14. Delete Material (Super Admin only)
+### 15. Delete Material (Super Admin only)
 DELETE http://localhost:5000/api/v1/materials/MAT001
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### ============================================================
+### PRODUCTS MANAGEMENT
+### ============================================================
+
+### Get All Products
+GET http://localhost:5000/api/v1/products
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### Get Product by ID
+GET http://localhost:5000/api/v1/products/00ea3ab2-6f2c-4490-92a4-ee5b9e22237f
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### Create New Product (Admin only)
+POST http://localhost:5000/api/v1/products
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "nama_produk": "bouquet snack mini",
+  "harga_jual": 45000
+}
+
+### Update Product (Admin only)
+PUT http://localhost:5000/api/v1/products/00ea3ab2-6f2c-4490-92a4-ee5b9e22237f
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "nama_produk": "bouquet snack mini premium",
+  "harga_jual": 55000
+}
+
+### Delete Product (Admin only)
+DELETE http://localhost:5000/api/v1/products/00ea3ab2-6f2c-4490-92a4-ee5b9e22237f
 Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}
 
@@ -119,17 +168,17 @@ X-CSRF-Token: {{csrfToken}}
 ### MATERIAL PURCHASES
 ### ============================================================
 
-### 15. Get All Material Purchases
+### 16. Get All Material Purchases
 GET http://localhost:5000/api/v1/material-purchases
 Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}
 
-### 16. Get Material Purchase by ID
+### 17. Get Material Purchase by ID
 GET http://localhost:5000/api/v1/material-purchases/1
 Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}
 
-### 17. Create Material Purchase (Admin only)
+### 18. Create Material Purchase (Admin only)
 ### Note: This will automatically update the material current_stock
 POST http://localhost:5000/api/v1/material-purchases
 Content-Type: application/json
@@ -142,7 +191,7 @@ X-CSRF-Token: {{csrfToken}}
   "harga_satuan": 5000
 }
 
-### 18. Update Material Purchase (Admin only)
+### 19. Update Material Purchase (Admin only)
 ### Note: Stock adjustment akan dilakukan otomatis berdasarkan qty lama dan baru
 PUT http://localhost:5000/api/v1/material-purchases/1
 Content-Type: application/json
@@ -155,7 +204,7 @@ X-CSRF-Token: {{csrfToken}}
   "harga_satuan": 4800
 }
 
-### 19. Delete Material Purchase (Super Admin only)
+### 20. Delete Material Purchase (Super Admin only)
 ### Note: Stock akan dikurangi sesuai qty yang dihapus
 DELETE http://localhost:5000/api/v1/material-purchases/1
 Content-Type: application/json
@@ -165,17 +214,17 @@ X-CSRF-Token: {{csrfToken}}
 ### SALES TRANSACTIONS
 ### ============================================================
 
-### 20. Get All Sales Transactions
+### 21. Get All Sales Transactions
 GET http://localhost:5000/api/v1/sales
 Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}
 
-### 21. Get Sales Transaction by ID
+### 22. Get Sales Transaction by ID
 GET http://localhost:5000/api/v1/sales/1
 Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}
 
-### 22. Create Sales Transaction
+### 23. Create Sales Transaction
 POST http://localhost:5000/api/v1/sales
 Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}
@@ -191,7 +240,7 @@ X-CSRF-Token: {{csrfToken}}
   "event_type": null
 }
 
-### 23. Update Sales Transaction
+### 24. Update Sales Transaction
 PUT http://localhost:5000/api/v1/sales/1
 Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}
@@ -207,12 +256,12 @@ X-CSRF-Token: {{csrfToken}}
   "event_type": "pernikahan"
 }
 
-### 24. Delete Sales Transaction (Super Admin only)
+### 25. Delete Sales Transaction (Super Admin only)
 DELETE http://localhost:5000/api/v1/sales/1
 Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}
 
-### 25. Get Sales Analytics Summary
+### 26. Get Sales Analytics Summary
 GET http://localhost:5000/api/v1/sales/analytics/summary
 Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}

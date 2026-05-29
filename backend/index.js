@@ -5,6 +5,8 @@ import cors from 'cors';
 import passport from 'passport';
 import pgSession from 'connect-pg-simple';
 import pg from 'pg';
+import { fileURLToPath } from 'url';
+import path from 'path';
 import { csrfSync } from 'csrf-sync';
 import { supabase } from './connection.js';
 
@@ -15,10 +17,14 @@ import { UserRoute } from './controller/UserController.js';
 import { MaterialRoute } from './controller/MaterialController.js';
 import { SalesRoute } from './controller/SalesController.js';
 import { MaterialPurshasesRoute } from './controller/MaterialPurshasesController.js';
+import { ProductRoute } from './controller/ProductController.js';
 
 // ======= Initialization
 const app = express();
 const PORT = process.env.PORT || 5000;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const staticPath = path.join(__dirname, 'static');
 
 const dbPool = new pg.Pool({
   host: process.env.DB_HOST,
@@ -38,6 +44,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use(express.static(staticPath));
 
 // ======= Session Setup
 app.use(session({
@@ -83,6 +90,7 @@ app.use((req, res, next) => {
 // ======= API Endpoints
 app.use("/api/v1/user", cekAutentikasi, UserRoute);
 app.use("/api/v1/materials", cekAutentikasi, MaterialRoute);
+app.use("/api/v1/products", cekAutentikasi, ProductRoute);
 app.use("/api/v1/sales", cekAutentikasi, SalesRoute);
 app.use("/api/v1/material-purchases", cekAutentikasi, MaterialPurshasesRoute);
 

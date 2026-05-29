@@ -20,21 +20,24 @@ const seedDummyUsers = async () => {
           email: 'kasir@gmail.com',
           password: password1,
           roles: 'kasir',
-          avatar_url: 'https://via.placeholder.com/150'
+          avatar_url: 'https://via.placeholder.com/150',
+          status_verified: 'not-verified'
         },
         {
           username: 'Admin Toko',
           email: 'admin1@gmail.com',
           password: password2,
           roles: 'admin',
-          avatar_url: 'https://via.placeholder.com/150'
+          avatar_url: 'https://via.placeholder.com/150',
+          status_verified: 'verified'
         },
         {
           username: 'Super Admin',
           email: 'superadmin@gmail.com',
           password: password3,
           roles: 'super-admin',
-          avatar_url: 'https://via.placeholder.com/150'
+          avatar_url: 'https://via.placeholder.com/150',
+          status_verified: 'verified'
         }
       ])
       .select();

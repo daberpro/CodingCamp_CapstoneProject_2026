@@ -4,6 +4,11 @@ import bcrypt from "bcrypt";
 
 export const UserRoute = express.Router();
 
+const STATUS_VERIFIED_VALUES = ['verified', 'not-verified'];
+const ADMIN_ROLES = ['admin', 'super-admin'];
+
+const isAdmin = (user) => ADMIN_ROLES.includes(user?.roles);
+
 UserRoute.get("/",(req,res)=>{
     res.json(req.user || {});
 });
@@ -22,7 +27,7 @@ UserRoute.get("/all", async (req, res) => {
     try {
         const { data, error } = await supabase
             .from('user')
-            .select('id, username, email, roles, avatar_url, created_at');
+            .select('id, username, email, roles, avatar_url, status_verified, created_at');
 
         if (error) throw error;
         res.json(data);
@@ -65,7 +70,8 @@ UserRoute.post("/add", async (req, res) => {
                 email, 
                 password: hashedPassword, 
                 roles: roles || 'kasir',
-                avatar_url 
+                avatar_url,
+                status_verified: 'not-verified'
             }])
             .select();
 
@@ -78,7 +84,7 @@ UserRoute.post("/add", async (req, res) => {
 
 UserRoute.put("/:id", async (req, res) => {
     const { id } = req.params;
-    const { username, email, password, avatar_url, roles } = req.body; 
+    const { username, email, password, avatar_url, roles, status_verified } = req.body;
 
     if (!req.user) {
         return res.status(401).json({ error: "Sesi tidak valid, harap login kembali." });
@@ -97,7 +103,7 @@ UserRoute.put("/:id", async (req, res) => {
     try {
         const { data: existingUser, error: fetchError } = await supabase
             .from('user')
-            .select('password')
+            .select('password, roles')
             .eq('id', id)
             .maybeSingle();
 
@@ -111,6 +117,22 @@ UserRoute.put("/:id", async (req, res) => {
         if (username) updateData.username = username;
         if (email) updateData.email = email;
         if (avatar_url !== undefined) updateData.avatar_url = avatar_url;
+
+        if (status_verified !== undefined) {
+            if (!isAdmin(req.user)) {
+                return res.status(403).json({
+                    error: "Akses ditolak. Hanya Admin yang dapat mengubah status verifikasi user."
+                });
+            }
+
+            if (!STATUS_VERIFIED_VALUES.includes(status_verified)) {
+                return res.status(400).json({
+                    error: "Status verifikasi tidak valid. Gunakan 'verified' atau 'not-verified'."
+                });
+            }
+
+            updateData.status_verified = status_verified;
+        }
 
         if (roles) {
             if (loggedInUserRole === 'super-admin') {
@@ -150,6 +172,53 @@ UserRoute.put("/:id", async (req, res) => {
 
         if (error) throw error;
         res.json({ message: "User berhasil diperbarui", data: data[0] });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+UserRoute.patch("/:id/status-verified", async (req, res) => {
+    const { id } = req.params;
+    const { status_verified } = req.body;
+
+    if (!req.user) {
+        return res.status(401).json({ error: "Sesi tidak valid, harap login kembali." });
+    }
+
+    if (!isAdmin(req.user)) {
+        return res.status(403).json({
+            error: "Akses ditolak. Hanya Admin yang dapat mengubah status verifikasi user."
+        });
+    }
+
+    if (!STATUS_VERIFIED_VALUES.includes(status_verified)) {
+        return res.status(400).json({
+            error: "Status verifikasi tidak valid. Gunakan 'verified' atau 'not-verified'."
+        });
+    }
+
+    try {
+        const { data: existingUser, error: fetchError } = await supabase
+            .from('user')
+            .select('id')
+            .eq('id', id)
+            .maybeSingle();
+
+        if (fetchError) throw fetchError;
+
+        if (!existingUser) {
+            return res.status(404).json({ error: "User dengan ID tersebut tidak ditemukan." });
+        }
+
+        const { data, error } = await supabase
+            .from('user')
+            .update({ status_verified })
+            .eq('id', id)
+            .select('id, username, email, roles, avatar_url, status_verified, created_at')
+            .single();
+
+        if (error) throw error;
+        res.json({ message: "Status verifikasi user berhasil diperbarui", data });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
