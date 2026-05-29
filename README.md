@@ -1,6 +1,3 @@
-Saya akan menganalisis repository Anda terlebih dahulu untuk membuat deskripsi yang menarik.Mari saya lihat struktur project Anda lebih detail:Berdasarkan analisis repository Anda, saya telah menyiapkan **deskripsi portfolio yang menarik** untuk proyek capstone ini:
-
----
 
 ## 📊 **Sales Forecasting & Business Intelligence Platform**
 
