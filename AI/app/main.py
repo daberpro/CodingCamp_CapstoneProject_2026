@@ -9,16 +9,21 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import Depends, FastAPI, Header, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, field_validator
+from dotenv import load_dotenv
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
+
 MODEL_PATH = BASE_DIR / "seq2seq_sales_forecast.keras"
 SALES_DATA_PATH = BASE_DIR / "ringkasan_penjualan_harian.csv"
 STATIC_QTY_PATH = BASE_DIR / "data_static_qty_normalized.csv"
 MIN_MAX_PATH = BASE_DIR / "min_max_dataset_full.csv"
 MODEL_VERSION = "GRU-RNN-v1.0-2026"
 MODEL_NAME = "GRU-Sales-Forecast"
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 LOOK_BACK_DAYS = 14
 FORECAST_HORIZON_DAYS = 7
 
@@ -27,6 +32,19 @@ app = FastAPI(
     title="Pitakado AI Inference Service",
     version="1.0.0",
     description="FastAPI service for Pitakado GRU sales forecasting integration.",
+)
+
+allowed_origins = [
+    origin.strip()
+    for origin in os.getenv("CORS_ALLOW_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",")
+    if origin.strip()
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -53,31 +71,27 @@ class FutureEvent(BaseModel):
 class PredictionItem(BaseModel):
     item_id: str
     static_features: dict[str, Any] = Field(default_factory=dict)
-    historical_sequence: list[HistoricalPoint]
+    historical_sequence: list[HistoricalPoint] = Field(default_factory=list)
     known_future_events: list[FutureEvent] = Field(default_factory=list)
 
     @field_validator("historical_sequence")
     @classmethod
     def validate_history(cls, value: list[HistoricalPoint]) -> list[HistoricalPoint]:
-        if len(value) < LOOK_BACK_DAYS:
-            raise ValueError(f"historical_sequence minimal {LOOK_BACK_DAYS} hari")
         return sorted(value, key=lambda point: point.date)
 
 
 class PredictRequest(BaseModel):
     request_config: RequestConfig = Field(default_factory=RequestConfig)
-    items: list[PredictionItem]
-
-    @field_validator("items")
-    @classmethod
-    def validate_items(cls, value: list[PredictionItem]) -> list[PredictionItem]:
-        if not value:
-            raise ValueError("items tidak boleh kosong")
-        return value
+    items: list[PredictionItem] = Field(default_factory=list)
 
 
 class SummaryRequest(BaseModel):
     item_id: str
+    prediction_data: dict[str, Any]
+    language: str = "id"
+
+
+class ExplainRequest(BaseModel):
     prediction_data: dict[str, Any]
     language: str = "id"
 
@@ -316,6 +330,9 @@ def add_to_total_materials(total_materials: dict[str, float], material_requireme
 
 
 def format_total_materials(total_materials: dict[str, float]) -> list[dict[str, Any]]:
+    if not total_materials:
+        return []
+
     _, material_names = get_material_recipes()
     return [
         {
@@ -325,6 +342,115 @@ def format_total_materials(total_materials: dict[str, float]) -> list[dict[str, 
         }
         for material_name in material_names
     ]
+
+
+def get_prediction_materials(prediction_data: dict[str, Any]) -> list[dict[str, Any]]:
+    if "material_requirements" in prediction_data:
+        return prediction_data.get("material_requirements", [])
+    return prediction_data.get("data", {}).get("material_requirements", [])
+
+
+def get_prediction_items(prediction_data: dict[str, Any]) -> list[dict[str, Any]]:
+    if "predictions" in prediction_data:
+        return prediction_data.get("predictions", [])
+    return prediction_data.get("data", {}).get("predictions", [])
+
+
+def top_materials_text(materials: list[dict[str, Any]], limit: int = 5) -> str:
+    top_materials = sorted(materials, key=lambda material: material.get("quantity", 0), reverse=True)[:limit]
+    if not top_materials:
+        return "Tidak ada data kebutuhan bahan baku."
+    return "\n".join(
+        f"- {material.get('material_name')}: {material.get('quantity')} unit "
+        f"(raw: {material.get('raw_quantity', material.get('quantity'))})"
+        for material in top_materials
+    )
+
+
+def product_forecast_text(items: list[dict[str, Any]]) -> str:
+    if not items:
+        return "Tidak ada detail prediksi produk."
+    lines = []
+    for item in items:
+        summary = item.get("forecast_summary", {})
+        lines.append(
+            f"- {item.get('product_name') or item.get('item_id')}: "
+            f"{summary.get('total_estimated_demand', 0)} produk, "
+            f"peak date {summary.get('peak_demand_date', '-')}, "
+            f"alert {item.get('alert', {}).get('status', 'UNKNOWN')}"
+        )
+    return "\n".join(lines)
+
+
+def build_explanation_prompt(prediction_data: dict[str, Any], language: str) -> str:
+    materials = get_prediction_materials(prediction_data)
+    items = get_prediction_items(prediction_data)
+    events = prediction_data.get("data", {}).get("summary", {}).get("detected_upcoming_events", [])
+
+    return f"""
+Kamu adalah asisten bisnis untuk toko bouquet Pitakado.
+
+Berdasarkan hasil prediksi penjualan produk dan kebutuhan bahan baku 7 hari ke depan berikut:
+
+Prediksi produk:
+{product_forecast_text(items)}
+
+Kebutuhan bahan baku utama:
+{top_materials_text(materials)}
+
+Event terdeteksi:
+{", ".join(events) if events else "-"}
+
+Buatkan rekomendasi singkat dalam bahasa {language} yang mencakup:
+1. prioritas pembelian bahan baku,
+2. risiko kekurangan stok,
+3. saran produksi,
+4. saran strategi penjualan,
+5. ringkasan keputusan untuk pemilik toko.
+
+Jawaban maksimal 5 poin, langsung praktis, dan mudah dipahami pemilik UMKM.
+""".strip()
+
+
+def build_rule_based_explanation(prediction_data: dict[str, Any]) -> str:
+    materials = get_prediction_materials(prediction_data)
+    items = get_prediction_items(prediction_data)
+    top_materials = sorted(materials, key=lambda material: material.get("quantity", 0), reverse=True)[:3]
+    critical_items = [
+        item.get("product_name") or item.get("item_id")
+        for item in items
+        if item.get("alert", {}).get("status") == "CRITICAL"
+    ]
+    material_text = ", ".join(
+        f"{material.get('material_name')} {material.get('quantity')} unit" for material in top_materials
+    )
+    critical_text = ", ".join(critical_items) if critical_items else "tidak ada produk critical"
+
+    return (
+        f"1. Prioritaskan pembelian bahan terbesar: {material_text or 'belum tersedia'}.\n"
+        f"2. Risiko stok perlu diawasi pada: {critical_text}.\n"
+        "3. Produksi sebaiknya fokus pada produk dengan prediksi demand tertinggi dan peak date terdekat.\n"
+        "4. Strategi penjualan: siapkan promo hanya jika bahan utama aman, agar tidak memicu kekurangan stok.\n"
+        "5. Keputusan: lakukan restock bahan prioritas sebelum periode prediksi dimulai."
+    )
+
+
+def generate_gemini_explanation(prediction_data: dict[str, Any], language: str) -> tuple[str, str]:
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        return build_rule_based_explanation(prediction_data), "Rule-Based-Summary-v1"
+
+    try:
+        from google import genai
+    except ModuleNotFoundError as exc:
+        raise RuntimeError("Package google-genai belum ter-install. Jalankan: pip install -r requirements.txt") from exc
+
+    client = genai.Client(api_key=api_key)
+    response = client.models.generate_content(
+        model=GEMINI_MODEL,
+        contents=build_explanation_prompt(prediction_data, language),
+    )
+    return response.text or build_rule_based_explanation(prediction_data), f"Gemini-{GEMINI_MODEL}"
 
 
 @app.get("/api/v1/model/info", dependencies=[Depends(verify_api_key)])
@@ -365,9 +491,20 @@ def predict(payload: PredictRequest) -> dict[str, Any]:
     response_predictions = []
     total_materials: dict[str, float] = {}
     unmatched_products = []
+    skipped_items = []
 
     try:
         for item in payload.items:
+            if len(item.historical_sequence) < LOOK_BACK_DAYS:
+                skipped_items.append(
+                    {
+                        "item_id": item.item_id,
+                        "reason": f"historical_sequence kurang dari {LOOK_BACK_DAYS} hari",
+                        "received_days": len(item.historical_sequence),
+                    }
+                )
+                continue
+
             predicted_demands, dates = run_prediction(item, horizon)
             total_estimated_demand = sum(predicted_demands)
             events = event_by_date(item.known_future_events)
@@ -414,6 +551,7 @@ def predict(payload: PredictRequest) -> dict[str, Any]:
             "summary": {
                 "detected_upcoming_events": all_events,
                 "unmatched_products": unmatched_products,
+                "skipped_items": skipped_items,
             },
             "predictions": response_predictions,
             "material_requirements": format_total_materials(total_materials),
@@ -421,28 +559,31 @@ def predict(payload: PredictRequest) -> dict[str, Any]:
     }
 
 
+@app.post("/api/v1/model/explain", dependencies=[Depends(verify_api_key)])
+def explain(payload: ExplainRequest) -> dict[str, Any]:
+    try:
+        explanation_text, generated_by = generate_gemini_explanation(payload.prediction_data, payload.language)
+    except RuntimeError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+
+    return {
+        "meta": {
+            "timestamp": utc_now_iso(),
+            "status": "success",
+        },
+        "data": {
+            "explanation_text": explanation_text,
+            "generated_by": generated_by,
+        },
+    }
+
+
 @app.post("/api/v1/model/summary", dependencies=[Depends(verify_api_key)])
 def summarize(payload: SummaryRequest) -> dict[str, Any]:
-    prediction = payload.prediction_data
-    alert = prediction.get("alert", {})
-    recommendation = prediction.get("recommendation", {})
-    forecast_summary = prediction.get("forecast_summary", {})
-    materials = prediction.get("material_requirements", [])
-    top_materials = sorted(materials, key=lambda material: material.get("quantity", 0), reverse=True)[:3]
-    top_materials_text = ", ".join(
-        f"{material.get('material_name')} {material.get('quantity')} unit" for material in top_materials
-    )
-
-    summary_text = (
-        f"Prediksi untuk {payload.item_id} memperkirakan produk terjual "
-        f"{forecast_summary.get('total_estimated_demand', 0)} unit dalam periode mendatang. "
-        f"Kebutuhan bahan baku terbesar: {top_materials_text or 'belum tersedia'}. "
-        f"Status stok saat ini {alert.get('status', 'UNKNOWN')} dengan stok tersedia "
-        f"{alert.get('current_stock', 0)} unit. Rekomendasi sistem adalah "
-        f"{recommendation.get('action', 'MONITOR_STOCK')} sebanyak "
-        f"{recommendation.get('suggested_quantity', 0)} unit sebelum "
-        f"{recommendation.get('deadline', '-') }."
-    )
+    try:
+        summary_text, generated_by = generate_gemini_explanation(payload.prediction_data, payload.language)
+    except RuntimeError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
 
     return {
         "meta": {
@@ -452,7 +593,7 @@ def summarize(payload: SummaryRequest) -> dict[str, Any]:
         "data": {
             "item_id": payload.item_id,
             "summary_text": summary_text,
-            "generated_by": "Rule-Based-Summary-v1",
+            "generated_by": generated_by,
         },
     }
 

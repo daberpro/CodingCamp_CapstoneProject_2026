@@ -13,17 +13,27 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-Opsional, aktifkan API key:
+Buat file `.env` dari template:
 
 ```bash
-export AI_API_KEY="isi-secret-key"
+cp .env.example .env
 ```
 
-Jika `AI_API_KEY` di-set, semua endpoint `/api/v1/model/*` wajib memakai header:
+Isi `.env`:
+
+```env
+AI_API_KEY=isi-secret-key-opsional
+GEMINI_API_KEY=isi-gemini-api-key
+GEMINI_MODEL=gemini-2.5-flash
+```
+
+Jika `AI_API_KEY` diisi, semua endpoint `/api/v1/model/*` wajib memakai header:
 
 ```http
 X-API-Key: isi-secret-key
 ```
+
+Jika `GEMINI_API_KEY` tidak di-set, endpoint penjelasan tetap berjalan dengan fallback rule-based.
 
 ## Run
 
@@ -42,6 +52,7 @@ http://localhost:8000/docs
 - `GET /health`
 - `GET /api/v1/model/info`
 - `POST /api/v1/model/predict`
+- `POST /api/v1/model/explain`
 - `POST /api/v1/model/summary`
 - `POST /api/v1/model/chat`
 
@@ -98,6 +109,11 @@ Model di notebook dilatih dengan `look_back_days=14` dan `forecast_horizon_days=
 - `data.predictions[].daily_forecasts`: prediksi jumlah produk terjual per hari.
 - `data.predictions[].material_requirements`: kebutuhan bahan baku untuk satu produk/SKU tersebut.
 - `data.material_requirements`: total kebutuhan semua bahan dari seluruh produk/SKU yang dikirim.
+- `data.summary.skipped_items`: produk yang dilewati karena data historis belum cukup.
+
+Jika web belum memiliki data, kirim `{}` atau `{"items": []}`. API akan mengembalikan `predictions: []` dan `material_requirements: []`, bukan angka prediksi buatan.
+
+Jika produk dikirim tetapi `historical_sequence` kurang dari 14 hari, produk tersebut tidak diprediksi dan akan muncul di `skipped_items`.
 
 Alur hitungnya:
 
@@ -127,6 +143,63 @@ Contoh ringkas output bahan:
 ```
 
 `quantity` dibulatkan ke atas karena bahan fisik perlu disiapkan dalam jumlah utuh. `raw_quantity` tetap disediakan untuk kebutuhan audit/perhitungan.
+
+## Endpoint Penjelasan AI
+
+`POST /api/v1/model/explain` menerima output utuh dari `/api/v1/model/predict`, lalu mengubahnya menjadi rekomendasi bisnis singkat.
+
+```json
+{
+  "language": "id",
+  "prediction_data": {
+    "data": {
+      "summary": {
+        "detected_upcoming_events": ["Promo Weekend"]
+      },
+      "predictions": [
+        {
+          "item_id": "bouquet pocky",
+          "product_name": "bouquet pocky",
+          "forecast_summary": {
+            "total_estimated_demand": 22,
+            "peak_demand_date": "2026-04-17"
+          },
+          "alert": {
+            "status": "CRITICAL"
+          }
+        }
+      ],
+      "material_requirements": [
+        {
+          "material_name": "Kertas Bouquet",
+          "quantity": 44,
+          "raw_quantity": 44.0
+        },
+        {
+          "material_name": "Gabus",
+          "quantity": 3,
+          "raw_quantity": 2.75
+        }
+      ]
+    }
+  }
+}
+```
+
+Response:
+
+```json
+{
+  "meta": {
+    "timestamp": "2026-05-26T00:00:00Z",
+    "status": "success"
+  },
+  "data": {
+    "explanation_text": "1. Prioritaskan ...",
+    "generated_by": "Gemini-gemini-2.5-flash"
+  }
+}
+```
 
 ## Catatan Integrasi
 
