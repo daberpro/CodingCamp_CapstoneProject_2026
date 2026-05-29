@@ -1,0 +1,309 @@
+### Backend API Documentation
+### Base URL: http://localhost:5000
+
+### ============================================================
+### AUTHENTICATION & CSRF
+### ============================================================
+
+### 1. Get CSRF Token (Required for POST/PUT/DELETE)
+GET http://localhost:5000/api/v1/xxdf
+
+### 2. Login with Google
+GET http://localhost:5000/auth/google
+
+### 3. Login with Email
+POST http://localhost:5000/auth/email
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+
+### 4. Logout
+GET http://localhost:5000/logout
+
+### ============================================================
+### USER MANAGEMENT
+### ============================================================
+
+### 5. Get Current User Profile
+GET http://localhost:5000/api/v1/user
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### 6. Get All Users (Super Admin & Admin only)
+GET http://localhost:5000/api/v1/user/all
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### 7. Create New User (Super Admin & Admin only)
+POST http://localhost:5000/api/v1/user/add
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "username": "john_doe",
+  "email": "john@example.com",
+  "password": "securePassword123",
+  "roles": "kasir",
+  "avatar_url": "https://example.com/avatar.jpg"
+}
+
+### 8. Update User (Super Admin can update anyone, others can only update themselves)
+PUT http://localhost:5000/api/v1/user/1
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "username": "john_doe_updated",
+  "email": "newemail@example.com",
+  "password": "newPassword123",
+  "avatar_url": "https://example.com/newavatarr.jpg",
+  "roles": "admin",
+  "status_verified": "verified"
+}
+
+### 9. Update User Verification Status (Admin & Super Admin only)
+PATCH http://localhost:5000/api/v1/user/1/status-verified
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "status_verified": "verified"
+}
+
+### 10. Delete User (Super Admin & Admin can delete kasir)
+DELETE http://localhost:5000/api/v1/user/1
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### ============================================================
+### MATERIALS MANAGEMENT
+### ============================================================
+
+### 11. Get All Materials
+GET http://localhost:5000/api/v1/materials
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### 12. Get Material by ID
+GET http://localhost:5000/api/v1/materials/MAT001
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### 13. Create New Material (Admin only)
+POST http://localhost:5000/api/v1/materials
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "material_id": "MAT001",
+  "nama_barang": "Bunga Mawar Merah",
+  "unit_type": "stem",
+  "usage_per_bouquet": 5,
+  "lead_time": 7,
+  "wastage_rate": 0.05
+}
+
+### 14. Update Material (Admin only)
+PUT http://localhost:5000/api/v1/materials/MAT001
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "material_id": "MAT001",
+  "nama_barang": "Bunga Mawar Merah Premium",
+  "unit_type": "stem",
+  "usage_per_bouquet": 6,
+  "lead_time": 5,
+  "wastage_rate": 0.03
+}
+
+### 15. Delete Material (Super Admin only)
+DELETE http://localhost:5000/api/v1/materials/MAT001
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### ============================================================
+### PRODUCTS MANAGEMENT
+### ============================================================
+
+### Get All Products
+GET http://localhost:5000/api/v1/products
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### Get Product by ID
+GET http://localhost:5000/api/v1/products/00ea3ab2-6f2c-4490-92a4-ee5b9e22237f
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### Create New Product (Admin only)
+POST http://localhost:5000/api/v1/products
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "nama_produk": "bouquet snack mini",
+  "harga_jual": 45000
+}
+
+### Update Product (Admin only)
+PUT http://localhost:5000/api/v1/products/00ea3ab2-6f2c-4490-92a4-ee5b9e22237f
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "nama_produk": "bouquet snack mini premium",
+  "harga_jual": 55000
+}
+
+### Delete Product (Admin only)
+DELETE http://localhost:5000/api/v1/products/00ea3ab2-6f2c-4490-92a4-ee5b9e22237f
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### ============================================================
+### MATERIAL PURCHASES
+### ============================================================
+
+### 16. Get All Material Purchases
+GET http://localhost:5000/api/v1/material-purchases
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### 17. Get Material Purchase by ID
+GET http://localhost:5000/api/v1/material-purchases/1
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### 18. Create Material Purchase (Admin only)
+### Note: This will automatically update the material current_stock
+POST http://localhost:5000/api/v1/material-purchases
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "tanggal": "2026-05-26",
+  "material_id": "MAT001",
+  "qty": 100,
+  "harga_satuan": 5000
+}
+
+### 19. Update Material Purchase (Admin only)
+### Note: Stock adjustment akan dilakukan otomatis berdasarkan qty lama dan baru
+PUT http://localhost:5000/api/v1/material-purchases/1
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "tanggal": "2026-05-27",
+  "material_id": "MAT001",
+  "qty": 150,
+  "harga_satuan": 4800
+}
+
+### 20. Delete Material Purchase (Super Admin only)
+### Note: Stock akan dikurangi sesuai qty yang dihapus
+DELETE http://localhost:5000/api/v1/material-purchases/1
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### ============================================================
+### SALES TRANSACTIONS
+### ============================================================
+
+### 21. Get All Sales Transactions
+GET http://localhost:5000/api/v1/sales
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### 22. Get Sales Transaction by ID
+GET http://localhost:5000/api/v1/sales/1
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### 23. Create Sales Transaction
+POST http://localhost:5000/api/v1/sales
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "tanggal": "2026-05-26",
+  "produk": "Bouquet Mawar Merah",
+  "qty": 5,
+  "harga_jual": 500000,
+  "modal": 200000,
+  "profit": 300000,
+  "is_event": false,
+  "event_type": null
+}
+
+### 24. Update Sales Transaction
+PUT http://localhost:5000/api/v1/sales/1
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "tanggal": "2026-05-27",
+  "produk": "Bouquet Mawar Merah Premium",
+  "qty": 3,
+  "harga_jual": 750000,
+  "modal": 300000,
+  "profit": 450000,
+  "is_event": true,
+  "event_type": "pernikahan"
+}
+
+### 25. Delete Sales Transaction (Super Admin only)
+DELETE http://localhost:5000/api/v1/sales/1
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### 26. Get Sales Analytics Summary
+GET http://localhost:5000/api/v1/sales/analytics/summary
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### ============================================================
+### IMPORTANT NOTES
+### ============================================================
+
+### Authentication:
+### - Semua endpoint (kecuali /auth/*, /logout, /api/v1/xxdf) memerlukan session yang valid
+### - Login terlebih dahulu menggunakan email atau Google
+### - Session disimpan dalam cookies
+
+### CSRF Protection:
+### - Semua request dengan method POST, PUT, DELETE memerlukan X-CSRF-Token header
+### - Dapatkan token baru dari endpoint GET /api/v1/xxdf
+### - Token disimpan dalam session dan divalidasi pada setiap request
+
+### User Roles:
+### - "kasir": Kasir - hanya dapat melihat data, tidak dapat menambah/edit/hapus
+### - "admin": Admin - dapat menambah/edit material dan material purchases
+### - "super-admin": Super Admin - akses penuh termasuk delete dan user management
+
+### Response Format:
+### Success (2xx):
+{
+  "success": true,
+  "message": "Operation berhasil",
+  "data": {}
+}
+
+### Error (4xx/5xx):
+{
+  "success": false,
+  "error": "Error message"
+}
+
+### Stock Management:
+### - Material purchases otomatis menambah current_stock di tabel materials
+### - Update purchases akan menyesuaikan stock berdasarkan selisih qty
+### - Delete purchases akan mengurangi stock (validation: stock tidak boleh negatif)
+
+### Timestamps:
+### - created_at dan updated_at otomatis diset oleh sistem
+### - Gunakan format ISO 8601 (YYYY-MM-DD) untuk tanggal
