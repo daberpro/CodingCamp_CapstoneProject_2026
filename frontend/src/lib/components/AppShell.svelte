@@ -11,6 +11,7 @@
 	let { children } = $props();
 	let user = $state(null);
 	let isLoading = $state(true);
+	let isRedirecting = $state(false);
 	let mobileNavOpen = $state(false);
 	let profileMenuOpen = $state(false);
 	let toast = $state('');
@@ -28,20 +29,32 @@
 	let userLabel = $derived(isLoading ? 'Memuat profil' : getDisplayName(user));
 	let userInitials = $derived(getInitials(userLabel));
 	let userAvatarUrl = $derived(getAvatarUrl(user));
-	let visibleNavItems = $derived(
-		navItems.filter((item) => !item.adminOnly || ['admin', 'super-admin'].includes(user?.roles))
-	);
+	let visibleNavItems = $derived(navItems.filter((item) => canAccessNavItem(item)));
 
 	onMount(async () => {
 		try {
 			user = await getCurrentUser();
 			if (!user) await goto('/login');
+			if (isCashierRestricted(page.url.pathname)) {
+				isRedirecting = true;
+				await goto('/kasir', { replaceState: true });
+			}
 		} catch (error) {
 			if (error.message) sessionStorage.setItem('auth_error', error.message);
 			await goto('/login');
 		} finally {
 			isLoading = false;
+			isRedirecting = false;
 		}
+	});
+
+	$effect(() => {
+		if (isLoading || !user || !isCashierRestricted(page.url.pathname)) return;
+
+		isRedirecting = true;
+		goto('/kasir', { replaceState: true }).finally(() => {
+			isRedirecting = false;
+		});
 	});
 
 	async function handleLogout() {
@@ -68,6 +81,17 @@
 
 	function isActive(href) {
 		return page.url.pathname === href || page.url.pathname.startsWith(`${href}/`);
+	}
+
+	function canAccessNavItem(item) {
+		if (user?.roles === 'kasir') return item.href === '/kasir';
+		if (item.adminOnly) return ['admin', 'super-admin'].includes(user?.roles);
+		return true;
+	}
+
+	function isCashierRestricted(pathname) {
+		if (user?.roles !== 'kasir') return false;
+		return pathname !== '/kasir' && !pathname.startsWith('/kasir/');
 	}
 </script>
 
@@ -162,7 +186,7 @@
 		</header>
 
 		<main class="min-h-[calc(100vh-5rem)] p-5 sm:p-8 lg:p-10">
-			{#if isLoading}
+			{#if isLoading || isRedirecting}
 				<SkeletonScreen showBar={false} />
 			{:else}
 				{@render children()}

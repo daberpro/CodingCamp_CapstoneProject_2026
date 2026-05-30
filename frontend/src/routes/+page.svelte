@@ -1,9 +1,15 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { getCurrentUser } from '$lib/api.js';
 
-	onMount(() => {
-		goto('/dashboard', { replaceState: true });
+	onMount(async () => {
+		try {
+			const user = await getCurrentUser();
+			await goto(user?.roles === 'kasir' ? '/kasir' : '/dashboard', { replaceState: true });
+		} catch {
+			await goto('/login', { replaceState: true });
+		}
 	});
 </script>
 
