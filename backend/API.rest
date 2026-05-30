@@ -220,7 +220,58 @@ Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}
 
 ### 22. Get Sales Transaction by ID
-GET http://localhost:5000/api/v1/sales/1
+GET http://localhost:5000/api/v1/sales/11111111-1111-4111-8111-111111111111
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### 22a. Get All Sales Transaction Details
+GET http://localhost:5000/api/v1/sales/details
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### 22b. Get Sales Transaction Detail by ID
+GET http://localhost:5000/api/v1/sales/details/1
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### 22c. Get Details by Transaction ID
+GET http://localhost:5000/api/v1/sales/11111111-1111-4111-8111-111111111111/details
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+### 22d. Create Sales Transaction Detail
+POST http://localhost:5000/api/v1/sales/details
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "transaction_id": "11111111-1111-4111-8111-111111111111",
+  "product_id": "00ea3ab2-6f2c-4490-92a4-ee5b9e22237f",
+  "qty": 2
+}
+
+### 22e. Create Sales Transaction Detail by Transaction ID
+POST http://localhost:5000/api/v1/sales/11111111-1111-4111-8111-111111111111/details
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "product_id": "00ea3ab2-6f2c-4490-92a4-ee5b9e22237f",
+  "qty": 2
+}
+
+### 22f. Update Sales Transaction Detail
+PUT http://localhost:5000/api/v1/sales/details/1
+Content-Type: application/json
+X-CSRF-Token: {{csrfToken}}
+
+{
+  "product_id": "11a423fd-e370-48fa-b224-ba53e643f82c",
+  "qty": 3
+}
+
+### 22g. Delete Sales Transaction Detail
+DELETE http://localhost:5000/api/v1/sales/details/1
 Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}
 
@@ -231,33 +282,40 @@ X-CSRF-Token: {{csrfToken}}
 
 {
   "tanggal": "2026-05-26",
-  "produk": "Bouquet Mawar Merah",
-  "qty": 5,
-  "harga_jual": 500000,
+  "transaction_type": "cash",
   "modal": 200000,
-  "profit": 300000,
   "is_event": false,
-  "event_type": null
+  "event_type": null,
+  "details": [
+    {
+      "product_id": "00ea3ab2-6f2c-4490-92a4-ee5b9e22237f",
+      "qty": 2
+    },
+    {
+      "product_id": "11a423fd-e370-48fa-b224-ba53e643f82c",
+      "qty": 3
+    }
+  ]
 }
 
 ### 24. Update Sales Transaction
-PUT http://localhost:5000/api/v1/sales/1
+PUT http://localhost:5000/api/v1/sales/11111111-1111-4111-8111-111111111111
 Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}
 
 {
   "tanggal": "2026-05-27",
-  "produk": "Bouquet Mawar Merah Premium",
   "qty": 3,
   "harga_jual": 750000,
   "modal": 300000,
   "profit": 450000,
   "is_event": true,
-  "event_type": "pernikahan"
+  "event_type": "pernikahan",
+  "transaction_type": "qris"
 }
 
 ### 25. Delete Sales Transaction (Super Admin only)
-DELETE http://localhost:5000/api/v1/sales/1
+DELETE http://localhost:5000/api/v1/sales/11111111-1111-4111-8111-111111111111
 Content-Type: application/json
 X-CSRF-Token: {{csrfToken}}
 

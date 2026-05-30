@@ -89,7 +89,7 @@
 			deleteRole: 'super-admin',
 			fields: [
 				['tanggal', 'Tanggal', 'date', true],
-				['produk', 'Produk', 'text', true],
+				['transaction_type', 'Tipe Transaksi', 'select', false, ['cash', 'qris', 'card']],
 				['qty', 'Qty', 'number', true],
 				['harga_jual', 'Harga Jual', 'number', true],
 				['modal', 'Modal', 'number', true],
@@ -100,7 +100,7 @@
 			columns: [
 				['id', 'ID'],
 				['tanggal', 'Tanggal'],
-				['produk', 'Produk'],
+				['transaction_type', 'Tipe'],
 				['qty', 'Qty'],
 				['harga_jual', 'Harga Jual'],
 				['modal', 'Modal'],
@@ -120,10 +120,18 @@
 	let toast = $state('');
 	let search = $state('');
 	let formOpen = $state(false);
+	let detailOpen = $state(false);
+	let detailRow = $state(null);
 	let formMode = $state('create');
 	let form = $state({});
 	let page = $state(1);
 	let pageSize = $state(10);
+	let selectedRows = $state({
+		products: [],
+		materials: [],
+		purchases: [],
+		sales: []
+	});
 
 	let resource = $derived(resources[active]);
 	let isSuperAdmin = $derived(currentUser?.roles === 'super-admin');
@@ -138,6 +146,11 @@
 		)
 	);
 	let paginatedRows = $derived(filteredRows.slice((page - 1) * pageSize, page * pageSize));
+	let selectedIds = $derived(selectedRows[active] || []);
+	let filteredIds = $derived(filteredRows.map((row) => rowId(row)));
+	let canDeleteResource = $derived(resource.deleteRole === 'admin' || isSuperAdmin);
+	let allFilteredSelected = $derived(filteredIds.length > 0 && filteredIds.every((id) => selectedIds.includes(id)));
+	let someFilteredSelected = $derived(filteredIds.some((id) => selectedIds.includes(id)));
 
 	$effect(() => {
 		active;
@@ -174,6 +187,39 @@
 		return data.sales || [];
 	}
 
+	function rowId(row) {
+		return String(row?.[resource.idKey] ?? '');
+	}
+
+	function isSelected(row) {
+		return selectedIds.includes(rowId(row));
+	}
+
+	function setSelectedIds(ids) {
+		selectedRows = {
+			...selectedRows,
+			[active]: [...new Set(ids.filter(Boolean))]
+		};
+	}
+
+	function toggleRow(row) {
+		const id = rowId(row);
+		if (!id) return;
+		setSelectedIds(selectedIds.includes(id) ? selectedIds.filter((item) => item !== id) : [...selectedIds, id]);
+	}
+
+	function toggleFilteredRows(checked) {
+		if (checked) {
+			setSelectedIds([...selectedIds, ...filteredIds]);
+			return;
+		}
+		setSelectedIds(selectedIds.filter((id) => !filteredIds.includes(id)));
+	}
+
+	function clearSelection() {
+		setSelectedIds([]);
+	}
+
 	function emptyForm() {
 		const next = {};
 		for (const [key, , type] of resource.fields) {
@@ -181,6 +227,7 @@
 		}
 		if (active === 'sales') {
 			next.tanggal = new Date().toISOString().slice(0, 10);
+			next.transaction_type = 'cash';
 			next.is_event = false;
 		}
 		if (active === 'purchases') next.tanggal = new Date().toISOString().slice(0, 10);
@@ -271,16 +318,14 @@
 	}
 
 	async function removeRow(row) {
-		if (!isSuperAdmin) return;
+		if (!canDeleteResource) return;
 		const id = row[resource.idKey];
 		if (!window.confirm(`Hapus ${resource.title} ${id}?`)) return;
 
 		error = '';
 		try {
-			if (active === 'products') await deleteProduct(id);
-			if (active === 'materials') await deleteMaterial(id);
-			if (active === 'purchases') await deletePurchase(id);
-			if (active === 'sales') await deleteSale(id);
+			await deleteActiveResource(id);
+			setSelectedIds(selectedIds.filter((item) => item !== String(id)));
 			toast = `${resource.title} berhasil dihapus.`;
 			await loadAdminData();
 		} catch (deleteError) {
@@ -288,10 +333,46 @@
 		}
 	}
 
+	async function removeSelectedRows() {
+		if (!canDeleteResource || selectedIds.length === 0) return;
+		if (!window.confirm(`Hapus ${selectedIds.length} data ${resource.label.toLowerCase()} yang dipilih?`)) return;
+
+		error = '';
+		isSaving = true;
+		try {
+			await Promise.all(selectedIds.map((id) => deleteActiveResource(id)));
+			toast = `${selectedIds.length} data ${resource.title.toLowerCase()} berhasil dihapus.`;
+			clearSelection();
+			await loadAdminData();
+		} catch (deleteError) {
+			error = deleteError.message || `Gagal menghapus data ${resource.title.toLowerCase()} yang dipilih.`;
+		} finally {
+			isSaving = false;
+		}
+	}
+
+	async function deleteActiveResource(id) {
+		if (active === 'products') await deleteProduct(id);
+		if (active === 'materials') await deleteMaterial(id);
+		if (active === 'purchases') await deletePurchase(id);
+		if (active === 'sales') await deleteSale(id);
+	}
+
 	function switchResource(key) {
 		active = key;
 		search = '';
 		closeForm();
+		closeDetail();
+	}
+
+	function openDetail(row) {
+		detailRow = row;
+		detailOpen = true;
+	}
+
+	function closeDetail() {
+		detailOpen = false;
+		detailRow = null;
 	}
 
 	function formatCell(row, key) {
@@ -299,7 +380,17 @@
 		if (['harga_satuan', 'total_harga', 'harga_jual', 'modal', 'profit'].includes(key)) return money(value);
 		if (key === 'is_event') return value ? 'Ya' : 'Tidak';
 		if (key === 'tanggal') return String(value || '').slice(0, 10);
+		if (key === 'created_at') return value ? new Date(value).toLocaleString('id-ID') : '-';
+		if (key === 'transaction_type') return displayTransactionType(value);
 		return value ?? '-';
+	}
+
+	function displayTransactionType(value) {
+		const type = String(value || '').toLowerCase();
+		if (type === 'cash') return 'Tunai';
+		if (type === 'qris') return 'QRIS';
+		if (type === 'card') return 'Kartu';
+		return value || '-';
 	}
 </script>
 
@@ -332,10 +423,23 @@
 		</section>
 
 		<section class="rounded-3xl bg-white p-5 shadow-sm">
-			<label class="flex items-center gap-3 rounded-2xl bg-slate-100 px-5 py-4 text-slate-400">
-				<Icon name="search" size={20} />
-				<input class="w-full bg-transparent text-slate-700 outline-none" bind:value={search} placeholder={`Cari ${resource.label.toLowerCase()}...`} />
-			</label>
+			<div class="flex flex-col gap-3 lg:flex-row lg:items-center">
+				<label class="flex flex-1 items-center gap-3 rounded-2xl bg-slate-100 px-5 py-4 text-slate-400">
+					<Icon name="search" size={20} />
+					<input class="w-full bg-transparent text-slate-700 outline-none" bind:value={search} placeholder={`Cari ${resource.label.toLowerCase()}...`} />
+				</label>
+				{#if selectedIds.length > 0}
+					<div class="flex flex-wrap items-center gap-3">
+						<span class="rounded-2xl bg-emerald-50 px-4 py-3 font-bold text-emerald-700">{selectedIds.length} dipilih</span>
+						<button class="rounded-2xl bg-slate-100 px-4 py-3 font-bold text-slate-700" onclick={clearSelection}>Batal pilih</button>
+						{#if canDeleteResource}
+							<button class="rounded-2xl bg-red-600 px-4 py-3 font-bold text-white disabled:bg-slate-300" disabled={isSaving} onclick={removeSelectedRows}>
+								Hapus Terpilih
+							</button>
+						{/if}
+					</div>
+				{/if}
+			</div>
 		</section>
 
 		<section class="rounded-3xl bg-white shadow-sm">
@@ -348,6 +452,18 @@
 					<table class="min-w-full text-left">
 						<thead class="text-sm uppercase tracking-wide text-slate-400">
 							<tr>
+								<th class="px-6 py-4">
+									<input
+										class="h-5 w-5 rounded border-slate-300 accent-emerald-700"
+										type="checkbox"
+										checked={allFilteredSelected}
+										aria-label="Pilih semua data pada filter ini"
+										onchange={(event) => toggleFilteredRows(event.currentTarget.checked)}
+									/>
+									{#if someFilteredSelected && !allFilteredSelected}
+										<span class="sr-only">Sebagian data dipilih</span>
+									{/if}
+								</th>
 								{#each resource.columns as [, label]}
 									<th class="px-6 py-4">{label}</th>
 								{/each}
@@ -357,15 +473,29 @@
 						<tbody class="divide-y divide-slate-100">
 							{#each paginatedRows as row}
 								<tr>
+									<td class="px-6 py-5">
+										<input
+											class="h-5 w-5 rounded border-slate-300 accent-emerald-700"
+											type="checkbox"
+											checked={isSelected(row)}
+											aria-label={`Pilih ${resource.title} ${row[resource.idKey]}`}
+											onchange={() => toggleRow(row)}
+										/>
+									</td>
 									{#each resource.columns as [key]}
 										<td class="whitespace-nowrap px-6 py-5">{formatCell(row, key)}</td>
 									{/each}
 									<td class="px-6 py-5">
 										<div class="flex justify-end gap-2">
+											{#if active === 'sales'}
+												<button class="grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 text-emerald-700" title="Detail" onclick={() => openDetail(row)}>
+													<Icon name="eye" size={18} />
+												</button>
+											{/if}
 											<button class="grid h-10 w-10 place-items-center rounded-xl bg-slate-100 text-slate-700" title="Edit" onclick={() => openEditForm(row)}>
 												<Icon name="edit" size={18} />
 											</button>
-											{#if resource.deleteRole === 'admin' || isSuperAdmin}
+											{#if canDeleteResource}
 												<button class="grid h-10 w-10 place-items-center rounded-xl bg-red-50 text-red-700" title="Hapus" onclick={() => removeRow(row)}>
 													<Icon name="trash" size={18} />
 												</button>
@@ -396,7 +526,7 @@
 				</div>
 
 				<div class="grid gap-4 sm:grid-cols-2">
-					{#each resource.fields as [key, label, type, required]}
+					{#each resource.fields as [key, label, type, required, options]}
 						<label class={`block ${type === 'checkbox' ? 'sm:col-span-2' : ''}`}>
 							<span class="mb-2 block text-sm font-bold text-slate-600">{label}</span>
 							{#if type === 'checkbox'}
@@ -408,6 +538,17 @@
 									<Icon name={form[key] ? 'check' : 'x'} size={18} />
 									{form[key] ? 'Ya' : 'Tidak'}
 								</button>
+							{:else if type === 'select'}
+								<select
+									class="w-full rounded-2xl bg-slate-100 px-5 py-4 outline-none focus:ring-2 focus:ring-brand"
+									value={form[key] ?? ''}
+									required={required}
+									onchange={(event) => setField(key, event.currentTarget.value, type)}
+								>
+									{#each options || [] as option}
+										<option value={option}>{displayTransactionType(option)}</option>
+									{/each}
+								</select>
 							{:else}
 								<input
 									class="w-full rounded-2xl bg-slate-100 px-5 py-4 outline-none focus:ring-2 focus:ring-brand"
@@ -429,6 +570,78 @@
 					</button>
 				</div>
 			</form>
+		</div>
+	{/if}
+
+	{#if detailOpen && detailRow}
+		<div class="fixed inset-0 z-50 grid place-items-center bg-slate-950/40 p-4">
+			<div class="max-h-[90vh] w-full max-w-5xl overflow-y-auto rounded-3xl bg-white p-6 shadow-soft sm:p-8">
+				<div class="mb-6 flex items-start justify-between gap-4">
+					<div class="min-w-0">
+						<h2 class="text-2xl font-bold">Detail Transaksi</h2>
+						<p class="mt-1 break-all text-slate-500">{detailRow.id}</p>
+					</div>
+					<button type="button" class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-slate-100" onclick={closeDetail}>
+						<Icon name="x" size={18} />
+					</button>
+				</div>
+
+				<div class="grid gap-3 md:grid-cols-3">
+					<div class="rounded-2xl bg-slate-50 p-4">
+						<p class="text-sm font-bold text-slate-500">Tanggal</p>
+						<p class="mt-1 font-semibold">{formatCell(detailRow, 'tanggal')}</p>
+					</div>
+					<div class="rounded-2xl bg-slate-50 p-4">
+						<p class="text-sm font-bold text-slate-500">Tipe Transaksi</p>
+						<p class="mt-1 font-semibold">{displayTransactionType(detailRow.transaction_type)}</p>
+					</div>
+					<div class="rounded-2xl bg-slate-50 p-4">
+						<p class="text-sm font-bold text-slate-500">Total Qty</p>
+						<p class="mt-1 font-semibold">{detailRow.qty || 0}</p>
+					</div>
+					<div class="rounded-2xl bg-slate-50 p-4">
+						<p class="text-sm font-bold text-slate-500">Harga Jual</p>
+						<p class="mt-1 font-semibold">{money(detailRow.harga_jual || 0)}</p>
+					</div>
+					<div class="rounded-2xl bg-slate-50 p-4">
+						<p class="text-sm font-bold text-slate-500">Modal</p>
+						<p class="mt-1 font-semibold">{money(detailRow.modal || 0)}</p>
+					</div>
+					<div class="rounded-2xl bg-slate-50 p-4">
+						<p class="text-sm font-bold text-slate-500">Profit</p>
+						<p class="mt-1 font-semibold">{money(detailRow.profit || 0)}</p>
+					</div>
+				</div>
+
+				<div class="mt-6 overflow-hidden rounded-2xl border border-slate-100">
+					<table class="min-w-full text-left">
+						<thead class="bg-slate-50 text-sm uppercase tracking-wide text-slate-400">
+							<tr>
+								<th class="px-5 py-4">Produk</th>
+								<th class="px-5 py-4">Product ID</th>
+								<th class="px-5 py-4">Qty</th>
+								<th class="px-5 py-4">Harga Satuan</th>
+								<th class="px-5 py-4">Subtotal</th>
+							</tr>
+						</thead>
+						<tbody class="divide-y divide-slate-100">
+							{#each detailRow.details || [] as detail}
+								<tr>
+									<td class="px-5 py-4 font-semibold">{detail.product?.nama_produk || '-'}</td>
+									<td class="break-all px-5 py-4 text-sm text-slate-600">{detail.product_id || '-'}</td>
+									<td class="px-5 py-4">{detail.qty || 0}</td>
+									<td class="px-5 py-4">{money(detail.product?.harga_jual || 0)}</td>
+									<td class="px-5 py-4 font-bold">{money((detail.product?.harga_jual || 0) * (detail.qty || 0))}</td>
+								</tr>
+							{:else}
+								<tr>
+									<td class="px-5 py-6 text-center text-slate-500" colspan="5">Detail produk belum tersedia.</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 	{/if}
 

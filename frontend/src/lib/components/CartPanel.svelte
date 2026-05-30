@@ -15,8 +15,7 @@
 	} = $props();
 
 	let subtotal = $derived(cart.reduce((sum, item) => sum + item.price * item.qty, 0));
-	let tax = $derived(subtotal * 0.1);
-	let total = $derived(subtotal + tax);
+	let total = $derived(subtotal);
 </script>
 
 <aside class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm xl:sticky xl:top-28">
@@ -47,16 +46,15 @@
 
 	<div class="mt-6 border-t border-slate-200 pt-5">
 		<div class="flex justify-between py-1"><span>Subtotal</span><span>{money(subtotal)}</span></div>
-		<div class="flex justify-between py-1"><span>Pajak (10%)</span><span>{money(tax)}</span></div>
 		<div class="mt-4 flex justify-between border-t border-slate-200 pt-4 text-xl font-bold">
 			<span>Total</span><span class="text-emerald-700">{money(total)}</span>
 		</div>
 
 		<p class="mt-5 font-semibold">Metode Pembayaran</p>
-		<div class="mt-3 grid grid-cols-2 gap-3">
-			{#each ['Tunai', 'Kartu/QRIS'] as method}
+		<div class="mt-3 grid grid-cols-3 gap-3">
+			{#each ['Tunai', 'QRIS', 'Kartu'] as method}
 				<button
-					class={`rounded-2xl px-4 py-4 font-bold ${paymentMethod === method ? 'bg-emerald-700 text-white' : 'bg-slate-100'}`}
+					class={`rounded-2xl px-3 py-4 font-bold ${paymentMethod === method ? 'bg-emerald-700 text-white' : 'bg-slate-100'}`}
 					onclick={() => onPaymentChange(method)}
 				>
 					{method}

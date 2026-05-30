@@ -26,7 +26,6 @@
 			matchesSearch(item.name, productSearch)
 		)
 	);
-	let total = $derived(cart.reduce((sum, item) => sum + item.price * item.qty, 0) * 1.1);
 
 	onMount(loadData);
 
@@ -57,23 +56,17 @@
 
 		try {
 			const tanggal = new Date().toISOString().slice(0, 10);
-			await Promise.all(
-				cart.map((item) => {
-					const itemTotal = Math.round(item.price * item.qty * 1.1);
-					return createSalesTransaction({
-						tanggal,
-						produk: item.id,
-						qty: item.qty,
-						harga_jual: itemTotal,
-						modal: Math.round(itemTotal * 0.55),
-						profit: Math.round(itemTotal * 0.45),
-						is_event: false,
-						event_type: null,
-						metode: paymentMethod,
-						pelanggan: customerName || null
-					});
-				})
-			);
+			await createSalesTransaction({
+				tanggal,
+				modal: 0,
+				transaction_type: transactionTypeFor(paymentMethod),
+				is_event: false,
+				event_type: null,
+				details: cart.map((item) => ({
+					product_id: item.id,
+					qty: item.qty
+				}))
+			});
 			cart = [];
 			customerName = '';
 			toast = 'Transaksi berhasil disimpan.';
@@ -83,6 +76,12 @@
 		} finally {
 			isPaying = false;
 		}
+	}
+
+	function transactionTypeFor(method) {
+		if (method === 'QRIS') return 'qris';
+		if (method === 'Kartu') return 'card';
+		return 'cash';
 	}
 </script>
 
