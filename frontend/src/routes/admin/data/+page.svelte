@@ -122,6 +122,12 @@
 	let formOpen = $state(false);
 	let detailOpen = $state(false);
 	let detailRow = $state(null);
+	let deleteDialog = $state({
+		open: false,
+		type: 'single',
+		row: null,
+		ids: []
+	});
 	let formMode = $state('create');
 	let form = $state({});
 	let page = $state(1);
@@ -319,30 +325,46 @@
 
 	async function removeRow(row) {
 		if (!canDeleteResource) return;
-		const id = row[resource.idKey];
-		if (!window.confirm(`Hapus ${resource.title} ${id}?`)) return;
-
-		error = '';
-		try {
-			await deleteActiveResource(id);
-			setSelectedIds(selectedIds.filter((item) => item !== String(id)));
-			toast = `${resource.title} berhasil dihapus.`;
-			await loadAdminData();
-		} catch (deleteError) {
-			error = deleteError.message || `Gagal menghapus ${resource.title.toLowerCase()}.`;
-		}
+		deleteDialog = {
+			open: true,
+			type: 'single',
+			row,
+			ids: [String(row[resource.idKey])]
+		};
 	}
 
 	async function removeSelectedRows() {
 		if (!canDeleteResource || selectedIds.length === 0) return;
-		if (!window.confirm(`Hapus ${selectedIds.length} data ${resource.label.toLowerCase()} yang dipilih?`)) return;
+		deleteDialog = {
+			open: true,
+			type: 'bulk',
+			row: null,
+			ids: [...selectedIds]
+		};
+	}
+
+	function closeDeleteDialog() {
+		deleteDialog = {
+			open: false,
+			type: 'single',
+			row: null,
+			ids: []
+		};
+	}
+
+	async function confirmDeleteRows() {
+		if (!canDeleteResource || deleteDialog.ids.length === 0) return;
 
 		error = '';
 		isSaving = true;
 		try {
-			await Promise.all(selectedIds.map((id) => deleteActiveResource(id)));
-			toast = `${selectedIds.length} data ${resource.title.toLowerCase()} berhasil dihapus.`;
-			clearSelection();
+			await Promise.all(deleteDialog.ids.map((id) => deleteActiveResource(id)));
+			setSelectedIds(selectedIds.filter((id) => !deleteDialog.ids.includes(id)));
+			toast =
+				deleteDialog.ids.length === 1
+					? `${resource.title} berhasil dihapus.`
+					: `${deleteDialog.ids.length} data ${resource.title.toLowerCase()} berhasil dihapus.`;
+			closeDeleteDialog();
 			await loadAdminData();
 		} catch (deleteError) {
 			error = deleteError.message || `Gagal menghapus data ${resource.title.toLowerCase()} yang dipilih.`;
@@ -640,6 +662,37 @@
 							{/each}
 						</tbody>
 					</table>
+				</div>
+			</div>
+		</div>
+	{/if}
+
+	{#if deleteDialog.open}
+		<div class="fixed inset-0 z-50 grid place-items-center bg-slate-950/40 p-4">
+			<div class="w-full max-w-md rounded-3xl bg-white p-6 shadow-soft sm:p-8">
+				<div class="mb-6 flex items-start gap-4">
+					<div class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-red-50 text-red-700">
+						<Icon name="trash" size={22} />
+					</div>
+					<div>
+						<h2 class="text-2xl font-bold">Hapus {deleteDialog.type === 'bulk' ? 'Data Terpilih' : resource.title}?</h2>
+						<p class="mt-2 text-slate-500">
+							{deleteDialog.type === 'bulk'
+								? `${deleteDialog.ids.length} data ${resource.label.toLowerCase()} akan dihapus permanen.`
+								: `Data ${resource.title} ${deleteDialog.ids[0]} akan dihapus permanen.`}
+						</p>
+					</div>
+				</div>
+
+				<div class="rounded-2xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+					Aksi ini tidak bisa dibatalkan setelah dikonfirmasi.
+				</div>
+
+				<div class="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+					<button class="rounded-2xl bg-slate-100 px-5 py-4 font-bold text-slate-700" disabled={isSaving} onclick={closeDeleteDialog}>Batal</button>
+					<button class="rounded-2xl bg-red-600 px-5 py-4 font-bold text-white disabled:bg-slate-300" disabled={isSaving} onclick={confirmDeleteRows}>
+						{isSaving ? 'Menghapus...' : 'Hapus'}
+					</button>
 				</div>
 			</div>
 		</div>

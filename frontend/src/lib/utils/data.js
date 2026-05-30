@@ -53,9 +53,48 @@ export function mapPurchases(purchasesData = []) {
 	});
 }
 
+export function defaultDateRange(days = 7) {
+	const end = new Date();
+	const start = new Date(end);
+	start.setDate(end.getDate() - (days - 1));
+	return {
+		startDate: toDateKey(start),
+		endDate: toDateKey(end)
+	};
+}
+
+export function presetDateRange(period) {
+	const end = new Date();
+	const start = new Date(end);
+	if (period === 'Hari Ini') {
+		return { startDate: toDateKey(end), endDate: toDateKey(end) };
+	}
+	if (period === 'Bulan Ini' || period === '30 Hari Terakhir') start.setDate(end.getDate() - 29);
+	else if (period === 'Tahun Ini') start.setMonth(0, 1);
+	else start.setDate(end.getDate() - 6);
+	return {
+		startDate: toDateKey(start),
+		endDate: toDateKey(end)
+	};
+}
+
 export function getReportMetrics(period, transactionRows, purchaseRows) {
 	const periodTransactions = filterByPeriod(transactionRows, period, 'rawDate');
 	const periodPurchases = filterByPeriod(purchaseRows, period, 'date');
+	const income = periodTransactions.reduce((sum, item) => sum + Number(item.total || 0), 0);
+	const expense = periodPurchases.reduce((sum, item) => sum + Number(item.total || 0), 0);
+
+	return {
+		income: compactMoney(income),
+		expense: compactMoney(expense),
+		profit: compactMoney(income - expense),
+		count: String(periodTransactions.length)
+	};
+}
+
+export function getReportMetricsByRange(transactionRows, purchaseRows, dateRange) {
+	const periodTransactions = filterByDateRange(transactionRows, dateRange, 'rawDate');
+	const periodPurchases = filterByDateRange(purchaseRows, dateRange, 'date');
 	const income = periodTransactions.reduce((sum, item) => sum + Number(item.total || 0), 0);
 	const expense = periodPurchases.reduce((sum, item) => sum + Number(item.total || 0), 0);
 
@@ -83,11 +122,27 @@ export function getDashboardMetrics(transactionRows, productRows, predictions, r
 	};
 }
 
-export function buildWeeklySeries(transactionRows, purchaseRows, aiPredictions = [], products = []) {
+export function getDashboardMetricsByRange(transactionRows, productRows, predictions, dateRange) {
+	const rangedTransactions = filterByDateRange(transactionRows, dateRange, 'rawDate');
+	const cash = rangedTransactions.reduce((sum, item) => sum + Number(item.total || 0), 0);
+	const stockItems = productRows.reduce((sum, item) => sum + Number(item.stock || 0), 0);
+	const criticalCount = predictions.filter((item) => item.alert?.status === 'CRITICAL').length;
+
+	return {
+		cash: money(cash),
+		stockItems: String(stockItems),
+		riskLevel: criticalCount ? 'High' : predictions.length ? 'Low' : '-',
+		riskBadge: predictions.length ? `${criticalCount} Critical` : 'No AI Data',
+		transactionGrowth: `${rangedTransactions.length} transaksi`,
+		stockBadge: `${productRows.length} produk`
+	};
+}
+
+export function buildWeeklySeries(transactionRows, purchaseRows, aiPredictions = [], products = [], days = 7) {
 	const today = new Date();
-	return Array.from({ length: 7 }, (_, index) => {
+	return Array.from({ length: days }, (_, index) => {
 		const date = new Date(today);
-		date.setDate(today.getDate() - (6 - index));
+		date.setDate(today.getDate() - (days - 1 - index));
 		const dateKey = toDateKey(date);
 		const revenue = transactionRows
 			.filter((item) => toDateKey(item.rawDate) === dateKey)
@@ -110,6 +165,39 @@ export function buildWeeklySeries(transactionRows, purchaseRows, aiPredictions =
 			forecast
 		};
 	});
+}
+
+export function buildRangeSeries(transactionRows, purchaseRows, dateRange, aiPredictions = [], products = []) {
+	const { start, end } = normalizeDateRange(dateRange);
+	const averagePrice =
+		products.length > 0 ? products.reduce((sum, item) => sum + Number(item.price || 0), 0) / products.length : 0;
+	const series = [];
+	const cursor = new Date(start);
+
+	while (cursor <= end) {
+		const dateKey = toDateKey(cursor);
+		const revenue = transactionRows
+			.filter((item) => toDateKey(item.rawDate) === dateKey)
+			.reduce((sum, item) => sum + Number(item.total || 0), 0);
+		const expense = purchaseRows
+			.filter((item) => toDateKey(item.date) === dateKey)
+			.reduce((sum, item) => sum + Number(item.total || 0), 0);
+		const forecast =
+			aiPredictions.reduce((sum, item) => {
+				const point = item.daily_forecasts?.find((entry) => entry.date === dateKey);
+				return sum + Number(point?.predicted_demand || 0);
+			}, 0) * averagePrice;
+
+		series.push({
+			day: cursor.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }),
+			revenue,
+			expense,
+			forecast
+		});
+		cursor.setDate(cursor.getDate() + 1);
+	}
+
+	return series;
 }
 
 export function buildAIModelCards(modelInfo) {
@@ -189,12 +277,20 @@ export function filterByPeriod(rows, period, dateKey) {
 	});
 }
 
+export function filterByDateRange(rows, dateRange, dateKey) {
+	const { start, end } = normalizeDateRange(dateRange);
+	return rows.filter((row) => {
+		const rowDate = parseLocalDate(row[dateKey] || row.date || row.rawDate || Date.now());
+		return rowDate >= start && rowDate <= end;
+	});
+}
+
 function filterByDashboardRange(rows, range) {
 	const period = range === 'Hari Ini' ? 'Hari Ini' : range === '30 Hari Terakhir' ? 'Bulan Ini' : 'Minggu Ini';
 	return filterByPeriod(rows, period, 'rawDate');
 }
 
-function toDateKey(value) {
+export function toDateKey(value) {
 	if (!value) return '';
 	if (value instanceof Date) {
 		const year = value.getFullYear();
@@ -203,6 +299,15 @@ function toDateKey(value) {
 		return `${year}-${month}-${day}`;
 	}
 	return String(value).slice(0, 10);
+}
+
+function normalizeDateRange(dateRange = {}) {
+	const fallback = defaultDateRange(7);
+	let start = parseLocalDate(dateRange.startDate || fallback.startDate);
+	let end = parseLocalDate(dateRange.endDate || fallback.endDate);
+	if (start > end) [start, end] = [end, start];
+	end.setHours(23, 59, 59, 999);
+	return { start, end };
 }
 
 function parseLocalDate(value) {

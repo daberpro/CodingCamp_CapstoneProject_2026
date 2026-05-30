@@ -28,6 +28,8 @@
 	let aiExplanation = $state(null);
 	let error = $state('');
 	let explainError = $state('');
+	let forecastHorizonDays = $state(7);
+	let confidenceInterval = $state(0.95);
 
 	let products = $derived(mapProducts(apiData?.materials));
 	let transactions = $derived(mapTransactions(apiData?.sales));
@@ -38,8 +40,9 @@
 	let risks = $derived(buildAIRisks(predictions));
 	let recommendations = $derived(buildAIRecommendations(predictions));
 	let stats = $derived(buildAIStats(predictions, materials, aiData?.modelInfo));
+	let forecastTitle = $derived(`Prediksi Revenue ${forecastHorizonDays} Hari`);
 	let forecastChart = $derived(
-		buildWeeklySeries(transactions, purchases, predictions, products).map((item) => ({
+		buildWeeklySeries(transactions, purchases, predictions, products, forecastHorizonDays).map((item) => ({
 			label: item.day,
 			actual: item.revenue,
 			forecast: item.forecast
@@ -56,7 +59,10 @@
 		try {
 			apiData = await loadPitakadoData();
 			const mappedProducts = mapProducts(apiData.materials || []);
-			aiData = await loadAIInsights(mappedProducts, apiData.sales || []);
+			aiData = await loadAIInsights(mappedProducts, apiData.sales || [], {
+				forecast_horizon_days: forecastHorizonDays,
+				confidence_interval: confidenceInterval
+			});
 			await loadExplanation();
 		} catch (loadError) {
 			error = loadError.message || 'Gagal memuat endpoint AI.';
@@ -90,6 +96,31 @@
 				</button>
 			</div>
 
+			<section class="rounded-3xl bg-white p-5 shadow-sm">
+				<div class="grid gap-3 md:grid-cols-[1fr_1fr_auto] md:items-end">
+					<label class="block">
+						<span class="mb-2 block text-sm font-bold text-slate-600">Forecast Horizon</span>
+						<select class="w-full rounded-2xl bg-slate-100 px-5 py-4 font-semibold outline-none focus:ring-2 focus:ring-brand" bind:value={forecastHorizonDays}>
+							{#each [3, 7, 14, 30] as days}
+								<option value={days}>{days} hari</option>
+							{/each}
+						</select>
+					</label>
+					<label class="block">
+						<span class="mb-2 block text-sm font-bold text-slate-600">Confidence Interval</span>
+						<select class="w-full rounded-2xl bg-slate-100 px-5 py-4 font-semibold outline-none focus:ring-2 focus:ring-brand" bind:value={confidenceInterval}>
+							{#each [0.8, 0.9, 0.95, 0.99] as interval}
+								<option value={interval}>{Math.round(interval * 100)}%</option>
+							{/each}
+						</select>
+					</label>
+					<button class="inline-flex h-[4.25rem] items-center justify-center gap-2 rounded-2xl bg-emerald-700 px-5 font-bold text-white disabled:bg-slate-300" onclick={refreshAI} disabled={isRefreshing}>
+						<Icon name="refresh" size={18} /> Terapkan
+					</button>
+				</div>
+				<p class="mt-3 text-sm text-slate-500">Horizon di atas 7 hari diproses otomatis per batch 7 hari.</p>
+			</section>
+
 			{#if error}
 				<div class="rounded-3xl bg-orange-50 p-5 font-semibold text-orange-700">{error}</div>
 			{/if}
@@ -98,7 +129,7 @@
 				<ModelCards cards={modelCards} />
 			{/if}
 
-			<LineChart title="Prediksi Revenue 7 Hari" subtitle="Data aktual dari backend dan forecast dari endpoint AI" data={forecastChart} />
+			<LineChart title={forecastTitle} subtitle={`Horizon ${forecastHorizonDays} hari dengan confidence ${Math.round(confidenceInterval * 100)}%`} data={forecastChart} />
 
 			<div class="grid gap-5 rounded-3xl bg-emerald-50 p-6 sm:grid-cols-2 xl:grid-cols-4">
 				{#each stats as stat}
