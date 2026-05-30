@@ -35,6 +35,10 @@
 	let roleFilter = $state('Semua');
 	let statusFilter = $state('Semua');
 	let formOpen = $state(false);
+	let deleteDialog = $state({
+		open: false,
+		user: null
+	});
 	let form = $state({ ...emptyForm });
 	let page = $state(1);
 	let pageSize = $state(10);
@@ -172,16 +176,34 @@
 
 	async function removeUser(user) {
 		if (!canDelete(user)) return;
-		const confirmed = window.confirm(`Hapus user ${user.username || user.email}?`);
-		if (!confirmed) return;
+		deleteDialog = {
+			open: true,
+			user
+		};
+	}
+
+	function closeDeleteDialog() {
+		deleteDialog = {
+			open: false,
+			user: null
+		};
+	}
+
+	async function confirmDeleteUser() {
+		const user = deleteDialog.user;
+		if (!canDelete(user)) return;
 
 		error = '';
+		isSaving = true;
 		try {
 			await deleteUser(user.id);
 			toast = 'User berhasil dihapus.';
+			closeDeleteDialog();
 			await loadUsers();
 		} catch (deleteError) {
 			error = deleteError.message || 'Gagal menghapus user.';
+		} finally {
+			isSaving = false;
 		}
 	}
 
@@ -385,6 +407,35 @@
 						</button>
 					</div>
 				</form>
+		</div>
+	{/if}
+
+	{#if deleteDialog.open && deleteDialog.user}
+		<div class="fixed inset-0 z-50 grid place-items-center bg-slate-950/40 p-4">
+			<div class="w-full max-w-md rounded-3xl bg-white p-6 shadow-soft sm:p-8">
+				<div class="mb-6 flex items-start gap-4">
+					<div class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-red-50 text-red-700">
+						<Icon name="trash" size={22} />
+					</div>
+					<div>
+						<h2 class="text-2xl font-bold">Hapus User?</h2>
+						<p class="mt-2 text-slate-500">
+							User {deleteDialog.user.username || deleteDialog.user.email || deleteDialog.user.id} akan dihapus permanen.
+						</p>
+					</div>
+				</div>
+
+				<div class="rounded-2xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+					Aksi ini tidak bisa dibatalkan setelah dikonfirmasi.
+				</div>
+
+				<div class="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+					<button class="rounded-2xl bg-slate-100 px-5 py-4 font-bold text-slate-700" disabled={isSaving} onclick={closeDeleteDialog}>Batal</button>
+					<button class="rounded-2xl bg-red-600 px-5 py-4 font-bold text-white disabled:bg-slate-300" disabled={isSaving} onclick={confirmDeleteUser}>
+						{isSaving ? 'Menghapus...' : 'Hapus'}
+					</button>
+				</div>
+			</div>
 		</div>
 	{/if}
 

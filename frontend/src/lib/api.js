@@ -237,20 +237,15 @@ export async function deleteSale(id) {
 	});
 }
 
-export async function loadAIInsights(products = [], sales = []) {
+export async function loadAIInsights(products = [], sales = [], config = {}) {
 	const items = buildPredictionItems(products, sales);
+	const requestConfig = {
+		forecast_horizon_days: Number(config.forecast_horizon_days || 7),
+		confidence_interval: Number(config.confidence_interval || 0.95)
+	};
 	const modelInfo = await aiFetch(AI_ENDPOINTS.info);
 	const prediction = items.length
-		? await aiFetch(AI_ENDPOINTS.predict, {
-				method: 'POST',
-				body: JSON.stringify({
-					request_config: {
-						forecast_horizon_days: 7,
-						confidence_interval: 0.95
-					},
-					items
-				})
-			})
+		? await loadBatchedPrediction(items, requestConfig)
 		: {
 				summary: {
 					detected_upcoming_events: [],
@@ -262,7 +257,97 @@ export async function loadAIInsights(products = [], sales = []) {
 
 	return {
 		modelInfo,
-		prediction
+		prediction,
+		requestConfig
+	};
+}
+
+async function loadBatchedPrediction(items, requestConfig) {
+	const totalHorizon = Math.max(1, Number(requestConfig.forecast_horizon_days || 7));
+	const confidenceInterval = Number(requestConfig.confidence_interval || 0.95);
+	const workingItems = items.map((item) => ({
+		...item,
+		historical_sequence: [...(item.historical_sequence || [])],
+		known_future_events: [...(item.known_future_events || [])]
+	}));
+	const batches = [];
+	let remainingDays = totalHorizon;
+
+	while (remainingDays > 0) {
+		const forecastDays = Math.min(7, remainingDays);
+		const batch = await aiFetch(AI_ENDPOINTS.predict, {
+			method: 'POST',
+			body: JSON.stringify({
+				request_config: {
+					forecast_horizon_days: forecastDays,
+					confidence_interval: confidenceInterval
+				},
+				items: workingItems
+			})
+		});
+		batches.push(batch);
+		appendForecastsToHistory(workingItems, batch?.predictions || []);
+		remainingDays -= forecastDays;
+	}
+
+	return mergePredictionBatches(batches);
+}
+
+function appendForecastsToHistory(items, predictions) {
+	for (const item of items) {
+		const prediction = predictions.find((entry) => String(entry.item_id || entry.product_name) === String(item.item_id));
+		if (!prediction?.daily_forecasts?.length) continue;
+		const forecastHistory = prediction.daily_forecasts.map((point) => ({
+			date: point.date,
+			sales_qty: Math.max(0, Number(point.predicted_demand || 0)),
+			is_holiday: Boolean(point.is_holiday),
+			has_promo: Boolean(point.has_promo)
+		}));
+		item.historical_sequence = [...item.historical_sequence, ...forecastHistory].slice(-14);
+	}
+}
+
+function mergePredictionBatches(batches) {
+	const mergedPredictions = new Map();
+
+	for (const batch of batches) {
+		for (const prediction of batch?.predictions || []) {
+			const key = String(prediction.item_id || prediction.product_name || mergedPredictions.size);
+			const existing = mergedPredictions.get(key) || { ...prediction, daily_forecasts: [] };
+			const dailyForecasts = [...(existing.daily_forecasts || []), ...(prediction.daily_forecasts || [])];
+			mergedPredictions.set(key, {
+				...existing,
+				...prediction,
+				daily_forecasts: dailyForecasts,
+				forecast_summary: summarizeForecasts(prediction.forecast_summary, dailyForecasts)
+			});
+		}
+	}
+
+	const lastBatch = batches[batches.length - 1] || {};
+	const firstBatch = batches[0] || {};
+	return {
+		...lastBatch,
+		summary: {
+			...(firstBatch.summary || {}),
+			...(lastBatch.summary || {})
+		},
+		predictions: [...mergedPredictions.values()],
+		material_requirements: lastBatch.material_requirements || []
+	};
+}
+
+function summarizeForecasts(fallbackSummary = {}, dailyForecasts = []) {
+	const totalDemand = dailyForecasts.reduce((sum, point) => sum + Number(point.predicted_demand || 0), 0);
+	const peak = dailyForecasts.reduce(
+		(best, point) => (Number(point.predicted_demand || 0) > Number(best?.predicted_demand || 0) ? point : best),
+		null
+	);
+
+	return {
+		...fallbackSummary,
+		total_estimated_demand: totalDemand,
+		peak_demand_date: peak?.date || fallbackSummary.peak_demand_date
 	};
 }
 

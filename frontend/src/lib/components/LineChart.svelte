@@ -5,6 +5,7 @@
 
 	let maxValue = $derived(Math.max(...data.flatMap((item) => [Number(item.actual || 0), Number(item.forecast || 0)]), 1));
 	let hasData = $derived(data.some((item) => item.actual || item.forecast));
+	let labelStep = $derived(Math.max(1, Math.ceil(data.length / 8)));
 
 	function chartPath(key) {
 		const values = data.map((item) => Number(item[key] || 0));
@@ -50,7 +51,7 @@
 				<path d={chartPath('forecast')} fill="none" stroke="#ad3f25" stroke-width="3" stroke-dasharray="8 6" />
 			</svg>
 			<div class="absolute bottom-0 left-0 right-0 grid text-xs font-bold text-slate-600" style={`grid-template-columns: repeat(${data.length}, minmax(0, 1fr))`}>
-				{#each data as item}<span>{item.label.toUpperCase()}</span>{/each}
+				{#each data as item, index}<span class="truncate text-center">{index % labelStep === 0 || index === data.length - 1 ? item.label.toUpperCase() : ''}</span>{/each}
 			</div>
 		{/if}
 	</div>
