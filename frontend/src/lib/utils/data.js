@@ -30,11 +30,11 @@ export function mapTransactions(sales = []) {
 			hour: '2-digit',
 			minute: '2-digit'
 		}),
-		cashier: item.kasir || item.cashier || '-',
+		cashier: item.kasir || item.cashier || item.created_by || item.user || '-',
 		items: `${item.qty || item.quantity || 0} item`,
 		total: Number(item.harga_jual || item.total || 0),
-		method: item.metode || item.method || '-',
-		status: item.status || '-'
+		method: displayTransactionType(item.transaction_type || item.metode || item.metode_pembayaran || item.payment_method || item.method),
+		status: item.status || item.status_pembayaran || item.payment_status || 'Selesai'
 	}));
 }
 
@@ -220,4 +220,12 @@ function pickProductIcon(name) {
 	if (lower.includes('sunflower')) return '🌻';
 	if (lower.includes('snack')) return '🍫';
 	return '💐';
+}
+
+function displayTransactionType(value) {
+	const type = String(value || '').toLowerCase();
+	if (type === 'cash') return 'Tunai';
+	if (type === 'qris') return 'QRIS';
+	if (type === 'card') return 'Kartu';
+	return value || '-';
 }
