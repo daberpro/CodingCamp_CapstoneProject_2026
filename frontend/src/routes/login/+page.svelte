@@ -14,7 +14,7 @@
 		sessionStorage.removeItem('auth_error');
 		try {
 			const user = await getCurrentUser();
-			if (user) await goto('/dashboard');
+			if (user) await goto(homePathFor(user));
 		} catch (sessionError) {
 			if (!error && sessionError.message) error = sessionError.message;
 		} finally {
@@ -28,13 +28,17 @@
 		isLoading = true;
 
 		try {
-			await loginWithEmail({ email, password });
-			await goto('/dashboard');
+			const user = await loginWithEmail({ email, password });
+			await goto(homePathFor(user));
 		} catch (loginError) {
 			error = loginError.message || 'Email atau password tidak valid.';
 		} finally {
 			isLoading = false;
 		}
+	}
+
+	function homePathFor(user) {
+		return user?.roles === 'kasir' ? '/kasir' : '/dashboard';
 	}
 </script>
 

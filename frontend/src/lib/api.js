@@ -112,7 +112,7 @@ export async function loginWithEmail({ email, password }) {
 		throw new Error('Akun belum diverifikasi admin.');
 	}
 
-	return loginData;
+	return user || loginData;
 }
 
 export async function logoutUser() {

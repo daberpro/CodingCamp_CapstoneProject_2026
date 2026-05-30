@@ -56,18 +56,24 @@
 		isPaying = true;
 
 		try {
-			await createSalesTransaction({
-				tanggal: new Date().toISOString().slice(0, 10),
-				produk: cart.map((item) => `${item.name} x${item.qty}`).join(', '),
-				qty: cart.reduce((sum, item) => sum + item.qty, 0),
-				harga_jual: Math.round(total),
-				modal: Math.round(total * 0.55),
-				profit: Math.round(total * 0.45),
-				is_event: false,
-				event_type: null,
-				metode: paymentMethod,
-				pelanggan: customerName || null
-			});
+			const tanggal = new Date().toISOString().slice(0, 10);
+			await Promise.all(
+				cart.map((item) => {
+					const itemTotal = Math.round(item.price * item.qty * 1.1);
+					return createSalesTransaction({
+						tanggal,
+						produk: item.id,
+						qty: item.qty,
+						harga_jual: itemTotal,
+						modal: Math.round(itemTotal * 0.55),
+						profit: Math.round(itemTotal * 0.45),
+						is_event: false,
+						event_type: null,
+						metode: paymentMethod,
+						pelanggan: customerName || null
+					});
+				})
+			);
 			cart = [];
 			customerName = '';
 			toast = 'Transaksi berhasil disimpan.';

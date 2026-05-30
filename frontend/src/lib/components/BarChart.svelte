@@ -4,8 +4,8 @@
 	let hasData = $derived(series.some((item) => item.revenue || item.expense));
 </script>
 
-<section class="my-8 rounded-3xl bg-white p-6 shadow-sm sm:p-8">
-	<div class="mb-6 flex justify-between">
+<section class="my-8 overflow-hidden rounded-3xl bg-white p-5 shadow-sm sm:p-8">
+	<div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 		<div>
 			<h2 class="text-2xl font-semibold">Pendapatan vs Pengeluaran</h2>
 			<p class="text-lg text-slate-700">Perbandingan mingguan</p>
@@ -20,14 +20,14 @@
 			Belum ada data pendapatan atau pembelian dari endpoint.
 		</div>
 	{:else}
-		<div class="flex h-72 items-end gap-5 border-b border-dashed border-slate-200 px-2 sm:gap-10">
+		<div class="grid h-72 grid-cols-7 items-end gap-2 border-b border-dashed border-slate-200 px-1 sm:gap-4 lg:gap-6">
 			{#each series as item}
-				<div class="flex flex-1 flex-col items-center justify-end gap-2">
-					<div class="flex h-56 items-end gap-1 sm:gap-2">
-						<div class="w-8 rounded-t-lg bg-emerald-700 sm:w-16" style={`height: ${Math.max(4, (item.revenue / maxBar) * 220)}px`}></div>
-						<div class="w-8 rounded-t-lg bg-orange-300 sm:w-16" style={`height: ${Math.max(4, (item.expense / maxBar) * 220)}px`}></div>
+				<div class="flex min-w-0 flex-col items-center justify-end gap-2">
+					<div class="flex h-56 w-full max-w-20 items-end justify-center gap-1 sm:gap-2">
+						<div class="min-w-0 flex-1 rounded-t-lg bg-emerald-700" style={`max-width: 2rem; height: ${Math.max(4, (item.revenue / maxBar) * 220)}px`}></div>
+						<div class="min-w-0 flex-1 rounded-t-lg bg-orange-300" style={`max-width: 2rem; height: ${Math.max(4, (item.expense / maxBar) * 220)}px`}></div>
 					</div>
-					<span class="text-sm">{item.day}</span>
+					<span class="truncate text-sm">{item.day}</span>
 				</div>
 			{/each}
 		</div>

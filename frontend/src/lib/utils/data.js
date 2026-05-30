@@ -13,7 +13,7 @@ export function mapProducts(materials = []) {
 
 export function mapSalesProducts(products = []) {
 	return products.map((item, index) => ({
-		id: item.id || index + 1,
+		id: item.id || item.product_id || item.productId || item.uuid || index + 1,
 		icon: pickProductIcon(item.nama_produk || item.name || ''),
 		name: item.nama_produk || item.name || `Produk ${index + 1}`,
 		category: item.category || 'Produk',
@@ -25,7 +25,7 @@ export function mapSalesProducts(products = []) {
 export function mapTransactions(sales = []) {
 	return sales.map((item, index) => ({
 		id: `#TRX-${item.id || 9400 + index}`,
-		rawDate: item.created_at || item.tanggal || item.date || new Date().toISOString(),
+		rawDate: item.tanggal || item.date || item.created_at || new Date().toISOString(),
 		time: new Date(item.created_at || item.tanggal || Date.now()).toLocaleTimeString('id-ID', {
 			hour: '2-digit',
 			minute: '2-digit'
@@ -88,12 +88,12 @@ export function buildWeeklySeries(transactionRows, purchaseRows, aiPredictions =
 	return Array.from({ length: 7 }, (_, index) => {
 		const date = new Date(today);
 		date.setDate(today.getDate() - (6 - index));
-		const dateKey = date.toISOString().slice(0, 10);
+		const dateKey = toDateKey(date);
 		const revenue = transactionRows
-			.filter((item) => String(item.rawDate || '').slice(0, 10) === dateKey)
+			.filter((item) => toDateKey(item.rawDate) === dateKey)
 			.reduce((sum, item) => sum + Number(item.total || 0), 0);
 		const expense = purchaseRows
-			.filter((item) => String(item.date || '').slice(0, 10) === dateKey)
+			.filter((item) => toDateKey(item.date) === dateKey)
 			.reduce((sum, item) => sum + Number(item.total || 0), 0);
 		const averagePrice =
 			products.length > 0 ? products.reduce((sum, item) => sum + Number(item.price || 0), 0) / products.length : 0;
@@ -184,7 +184,7 @@ export function filterByPeriod(rows, period, dateKey) {
 	start.setHours(0, 0, 0, 0);
 
 	return rows.filter((row) => {
-		const rowDate = new Date(row[dateKey] || row.date || row.rawDate || Date.now());
+		const rowDate = parseLocalDate(row[dateKey] || row.date || row.rawDate || Date.now());
 		return rowDate >= start && rowDate <= now;
 	});
 }
@@ -192,6 +192,25 @@ export function filterByPeriod(rows, period, dateKey) {
 function filterByDashboardRange(rows, range) {
 	const period = range === 'Hari Ini' ? 'Hari Ini' : range === '30 Hari Terakhir' ? 'Bulan Ini' : 'Minggu Ini';
 	return filterByPeriod(rows, period, 'rawDate');
+}
+
+function toDateKey(value) {
+	if (!value) return '';
+	if (value instanceof Date) {
+		const year = value.getFullYear();
+		const month = String(value.getMonth() + 1).padStart(2, '0');
+		const day = String(value.getDate()).padStart(2, '0');
+		return `${year}-${month}-${day}`;
+	}
+	return String(value).slice(0, 10);
+}
+
+function parseLocalDate(value) {
+	const dateKey = toDateKey(value);
+	if (!dateKey) return new Date(value || Date.now());
+	const [year, month, day] = dateKey.split('-').map(Number);
+	if (!year || !month || !day) return new Date(value || Date.now());
+	return new Date(year, month - 1, day);
 }
 
 function pickProductIcon(name) {
