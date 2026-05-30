@@ -56,9 +56,10 @@
 
 		try {
 			const tanggal = new Date().toISOString().slice(0, 10);
+			const modal = cart.reduce((sum, item) => sum + Number(item.modal || 0) * item.qty, 0);
 			await createSalesTransaction({
 				tanggal,
-				modal: 0,
+				modal,
 				transaction_type: transactionTypeFor(paymentMethod),
 				is_event: false,
 				event_type: null,

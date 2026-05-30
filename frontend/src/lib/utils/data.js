@@ -18,6 +18,7 @@ export function mapSalesProducts(products = []) {
 		name: item.nama_produk || item.name || `Produk ${index + 1}`,
 		category: item.category || 'Produk',
 		price: Number(item.harga_jual || item.price || 0),
+		modal: Number(item.modal || item.harga_modal || item.harga_beli || item.harga_pokok || item.hpp || item.cost || 0),
 		stock: item.current_stock ?? item.stock ?? null
 	}));
 }
